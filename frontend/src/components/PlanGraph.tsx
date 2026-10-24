@@ -4,7 +4,6 @@ import ReactFlow, {
   Background,
   Controls,
   MarkerType,
-  MiniMap,
   Panel,
   Position,
 } from "reactflow";
@@ -34,28 +33,14 @@ interface GraphStats {
 const nodeWidth = 260;
 const nodeHeight = 124;
 
-const getNodeColor = (
-  type: string,
-): { bg: string; border: string; text: string } => {
+// Plan nodes stay neutral: identity colour is reserved for exact/estimate.
+// Joins and aggregations, where most of the work happens, get a darker rule.
+const getNodeColor = (type: string): { border: string } => {
   const upperType = type.toUpperCase();
-
-  if (upperType.includes("SCAN") || upperType.includes("FILTER") || upperType.includes("READ")) {
-    return { bg: "#15324e", border: "#5aaaf5", text: "#cfe7ff" };
+  if (upperType.includes("JOIN") || upperType.includes("AGGREGATE") || upperType.includes("GROUP")) {
+    return { border: "var(--ink-2)" };
   }
-  if (upperType.includes("JOIN")) {
-    return { bg: "#442230", border: "#f29cab", text: "#ffd6de" };
-  }
-  if (upperType.includes("AGGREGATE") || upperType.includes("GROUP")) {
-    return { bg: "#263d22", border: "#b5da68", text: "#ddf7b0" };
-  }
-  if (upperType.includes("SORT") || upperType.includes("ORDER")) {
-    return { bg: "#43331f", border: "#f6bf63", text: "#ffe6b6" };
-  }
-  if (upperType.includes("LIMIT")) {
-    return { bg: "#2a2d48", border: "#a7b0ff", text: "#dce0ff" };
-  }
-
-  return { bg: "#202020", border: "#7e8795", text: "#e5e7eb" };
+  return { border: "var(--line-strong)" };
 };
 
 const formatNumber = (value: number) => new Intl.NumberFormat().format(value);
@@ -184,7 +169,7 @@ const buildGraph = (plan: PlanNode) => {
                   title="Estimated/actual rows"
                   style={{
                     fontSize: "10px",
-                    background: "rgba(255,255,255,0.12)",
+                    background: "var(--sunken)", border: "1px solid var(--line)",
                     borderRadius: "999px",
                     padding: "2px 7px",
                   }}
@@ -197,7 +182,7 @@ const buildGraph = (plan: PlanNode) => {
                   title="Estimated cost"
                   style={{
                     fontSize: "10px",
-                    background: "rgba(255,255,255,0.12)",
+                    background: "var(--sunken)", border: "1px solid var(--line)",
                     borderRadius: "999px",
                     padding: "2px 7px",
                   }}
@@ -210,7 +195,7 @@ const buildGraph = (plan: PlanNode) => {
                   title="Execution time metric"
                   style={{
                     fontSize: "10px",
-                    background: "rgba(255,255,255,0.12)",
+                    background: "var(--sunken)", border: "1px solid var(--line)",
                     borderRadius: "999px",
                     padding: "2px 7px",
                   }}
@@ -238,11 +223,12 @@ const buildGraph = (plan: PlanNode) => {
         width: nodeWidth,
         minHeight: `${nodeHeight}px`,
         padding: "10px 12px",
-        borderRadius: "12px",
-        border: `1px solid ${colors.border}`,
-        background: `linear-gradient(165deg, ${colors.bg} 0%, #111827 100%)`,
-        color: colors.text,
-        boxShadow: `0 10px 30px ${colors.border}30`,
+        borderRadius: "5px",
+        border: "1px solid var(--line)",
+        borderLeft: `3px solid ${colors.border}`,
+        background: "var(--raised)",
+        color: "var(--ink)",
+        fontFamily: "var(--sans)",
       },
     });
 
@@ -256,12 +242,12 @@ const buildGraph = (plan: PlanNode) => {
         target: id,
         type: "smoothstep",
         style: {
-          stroke: "rgba(130,170,220,0.45)",
-          strokeWidth: 2,
+          stroke: "var(--line-strong)",
+          strokeWidth: 1.5,
         },
         markerEnd: {
           type: MarkerType.ArrowClosed,
-          color: "rgba(130,170,220,0.55)",
+          color: "var(--line-strong)",
         },
       });
       dagreGraph.setEdge(parentId, id);
@@ -292,33 +278,29 @@ function PlanGraph({ plan }: { plan: PlanNode }) {
   const stats = useMemo(() => collectStats(plan), [plan]);
 
   return (
-    <ReactFlow nodes={nodes} edges={edges} fitView>
-      <Background color="#1f2937" gap={24} />
-      <MiniMap
-        style={{ background: "#0d1117", border: "0.5px solid #2f3b4f" }}
-        nodeStrokeColor={(node) => String(node.style?.border ?? "#6b7280")}
-      />
-      <Controls style={{ background: "#0f172a", border: "0.5px solid #334155" }} />
+    <ReactFlow nodes={nodes} edges={edges} fitView proOptions={{ hideAttribution: true }}>
+      <Background color="var(--line)" gap={22} />
+      <Controls showInteractive={false} />
       <Panel
         position="top-left"
         style={{
-          background: "rgba(15,23,42,0.82)",
-          border: "0.5px solid rgba(148,163,184,0.35)",
-          borderRadius: "10px",
-          padding: "8px 10px",
-          color: "#d1d5db",
+          background: "var(--raised)",
+          border: "1px solid var(--line)",
+          borderRadius: "5px",
+          padding: "6px 10px",
+          color: "var(--muted)",
           display: "flex",
-          gap: "10px",
+          gap: "12px",
           flexWrap: "wrap",
-          fontSize: "11px",
+          fontSize: "11.5px",
+          fontFamily: "var(--sans)",
         }}
       >
-        <span>nodes: {stats.totalNodes}</span>
-        <span>depth: {stats.maxDepth}</span>
-        <span>scans: {stats.scanNodes}</span>
-        <span>joins: {stats.joinNodes}</span>
-        <span>aggregates: {stats.aggregateNodes}</span>
-        <span>rows(sum): {formatNumber(Math.round(stats.estimatedRows))}</span>
+        <span>{stats.totalNodes} steps</span>
+        <span>{stats.scanNodes} scans</span>
+        <span>{stats.joinNodes} joins</span>
+        <span>{stats.aggregateNodes} aggregations</span>
+        <span>~{formatNumber(Math.round(stats.estimatedRows))} rows handled</span>
       </Panel>
     </ReactFlow>
   );

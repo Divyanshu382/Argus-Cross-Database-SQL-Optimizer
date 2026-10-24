@@ -176,7 +176,9 @@ def _parse_order_by(order_by_clause: str | None, parsed: ParsedQuery | None = No
 def parse_analytical_query(query: str) -> ParsedQuery:
     normalized = query.strip().rstrip(";")
     match = re.match(
-        r"(?is)^select\s+(?P<select>.+?)\s+from\s+(?P<table>[a-zA-Z_][a-zA-Z0-9_]*)"
+        # The table may be qualified (rfam.family, pg.public.orders) and quoted.
+        r'(?is)^select\s+(?P<select>.+?)\s+from\s+(?P<table>(?:[a-zA-Z_][a-zA-Z0-9_]*|"[^"]+")'
+        r'(?:\.(?:[a-zA-Z_][a-zA-Z0-9_]*|"[^"]+")){0,2})'
         r"(?:\s+where\s+(?P<where>.+?))?"
         r"(?:\s+group\s+by\s+(?P<group_by>.+?))?"
         r"(?:\s+order\s+by\s+(?P<order_by>.+?))?"

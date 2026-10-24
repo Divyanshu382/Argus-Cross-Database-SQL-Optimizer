@@ -1,0 +1,249 @@
+[
+  {
+    "query": "Q1 group by, 3M rows",
+    "sql": "SELECT l_returnflag, l_linestatus, SUM(l_quantity), AVG(l_extendedprice), COUNT(*) FROM lineitem GROUP BY l_returnflag, l_linestatus ORDER BY l_returnflag, l_linestatus",
+    "runs": 30,
+    "exact_s": 0.007898807525634766,
+    "approx_s": 0.005802916508400813,
+    "speedup": 1.3611789027465337,
+    "mean_error_pct": 3.938167328986863,
+    "worst_error_pct": 17.488640446764787,
+    "ci_coverage": 0.9722222222222222,
+    "median_ci_pct": 16.7072009719014,
+    "sample_rate": 0.09251562002112954,
+    "stop_reasons": [
+      "ci_reached"
+    ],
+    "exact_pushed_to_source": false,
+    "setting": "local",
+    "preset": "fast"
+  },
+  {
+    "query": "Q6-style filter, 3M rows",
+    "sql": "SELECT SUM(l_extendedprice * l_discount) FROM lineitem WHERE l_discount BETWEEN 0.05 AND 0.07 AND l_quantity < 24",
+    "runs": 30,
+    "exact_s": 0.0019881725311279297,
+    "approx_s": 0.002801271009957418,
+    "speedup": 0.7097394447237548,
+    "mean_error_pct": 6.459661001489999,
+    "worst_error_pct": 21.909268387022777,
+    "ci_coverage": 0.9666666666666667,
+    "median_ci_pct": 17.54918117889227,
+    "sample_rate": 0.08234995204254969,
+    "stop_reasons": [
+      "ci_reached"
+    ],
+    "exact_pushed_to_source": false,
+    "setting": "local",
+    "preset": "fast"
+  },
+  {
+    "query": "3-way join, group by nation",
+    "sql": "SELECT n.n_name, COUNT(*), SUM(l.l_extendedprice) FROM lineitem l JOIN orders o ON o.o_orderkey = l.l_orderkey JOIN customer c ON c.c_custkey = o.o_custkey JOIN nation n ON n.n_nationkey = c.c_nationkey GROUP BY n.n_name ORDER BY n.n_name",
+    "runs": 30,
+    "exact_s": 0.03815913200378418,
+    "approx_s": 0.01750435447320342,
+    "speedup": 2.1799793909681258,
+    "mean_error_pct": 5.552299240443964,
+    "worst_error_pct": 19.359908784468967,
+    "ci_coverage": 0.986,
+    "median_ci_pct": 17.748364507880893,
+    "sample_rate": 0.08644493161525285,
+    "stop_reasons": [
+      "ci_reached"
+    ],
+    "exact_pushed_to_source": false,
+    "setting": "local",
+    "preset": "fast"
+  },
+  {
+    "query": "Q1 group by, 3M rows",
+    "sql": "SELECT l_returnflag, l_linestatus, SUM(l_quantity), AVG(l_extendedprice), COUNT(*) FROM lineitem GROUP BY l_returnflag, l_linestatus ORDER BY l_returnflag, l_linestatus",
+    "runs": 30,
+    "exact_s": 0.007938146591186523,
+    "approx_s": 0.010700979473767802,
+    "speedup": 0.7418149535419594,
+    "mean_error_pct": 2.150746969071724,
+    "worst_error_pct": 8.891728806546931,
+    "ci_coverage": 0.9583333333333334,
+    "median_ci_pct": 7.094115891471715,
+    "sample_rate": 0.3655440019204985,
+    "stop_reasons": [
+      "ci_reached"
+    ],
+    "exact_pushed_to_source": false,
+    "setting": "local",
+    "preset": "balanced"
+  },
+  {
+    "query": "Q6-style filter, 3M rows",
+    "sql": "SELECT SUM(l_extendedprice * l_discount) FROM lineitem WHERE l_discount BETWEEN 0.05 AND 0.07 AND l_quantity < 24",
+    "runs": 30,
+    "exact_s": 0.002070903778076172,
+    "approx_s": 0.003955187479732558,
+    "speedup": 0.5235918116873192,
+    "mean_error_pct": 2.855433478804059,
+    "worst_error_pct": 8.430326254862571,
+    "ci_coverage": 0.9666666666666667,
+    "median_ci_pct": 6.690164501637787,
+    "sample_rate": 0.3644106003701536,
+    "stop_reasons": [
+      "ci_reached"
+    ],
+    "exact_pushed_to_source": false,
+    "setting": "local",
+    "preset": "balanced"
+  },
+  {
+    "query": "3-way join, group by nation",
+    "sql": "SELECT n.n_name, COUNT(*), SUM(l.l_extendedprice) FROM lineitem l JOIN orders o ON o.o_orderkey = l.l_orderkey JOIN customer c ON c.c_custkey = o.o_custkey JOIN nation n ON n.n_nationkey = c.c_nationkey GROUP BY n.n_name ORDER BY n.n_name",
+    "runs": 30,
+    "exact_s": 0.03346681594848633,
+    "approx_s": 0.035430603980785236,
+    "speedup": 0.9445736789199555,
+    "mean_error_pct": 2.7550983787870393,
+    "worst_error_pct": 9.387735404608954,
+    "ci_coverage": 0.938,
+    "median_ci_pct": 6.55277797462897,
+    "sample_rate": 0.39341359463273556,
+    "stop_reasons": [
+      "ci_reached"
+    ],
+    "exact_pushed_to_source": false,
+    "setting": "local",
+    "preset": "balanced"
+  },
+  {
+    "query": "Q1 group by, 3M rows",
+    "sql": "SELECT l_returnflag, l_linestatus, SUM(l_quantity), AVG(l_extendedprice), COUNT(*) FROM lineitem GROUP BY l_returnflag, l_linestatus ORDER BY l_returnflag, l_linestatus",
+    "runs": 30,
+    "exact_s": 0.008085250854492188,
+    "approx_s": 0.012614270992344245,
+    "speedup": 0.6409606119449333,
+    "mean_error_pct": 1.6234859592433892,
+    "worst_error_pct": 6.982441812984892,
+    "ci_coverage": 0.975,
+    "median_ci_pct": 5.4256908085896,
+    "sample_rate": 0.5,
+    "stop_reasons": [
+      "needs_exact"
+    ],
+    "exact_pushed_to_source": false,
+    "setting": "local",
+    "preset": "accurate"
+  },
+  {
+    "query": "Q6-style filter, 3M rows",
+    "sql": "SELECT SUM(l_extendedprice * l_discount) FROM lineitem WHERE l_discount BETWEEN 0.05 AND 0.07 AND l_quantity < 24",
+    "runs": 30,
+    "exact_s": 0.002003908157348633,
+    "approx_s": 0.004412353999214247,
+    "speedup": 0.4541585189460069,
+    "mean_error_pct": 2.024066295441787,
+    "worst_error_pct": 5.31814220676514,
+    "ci_coverage": 0.9666666666666667,
+    "median_ci_pct": 5.131013911942844,
+    "sample_rate": 0.5,
+    "stop_reasons": [
+      "needs_exact"
+    ],
+    "exact_pushed_to_source": false,
+    "setting": "local",
+    "preset": "accurate"
+  },
+  {
+    "query": "3-way join, group by nation",
+    "sql": "SELECT n.n_name, COUNT(*), SUM(l.l_extendedprice) FROM lineitem l JOIN orders o ON o.o_orderkey = l.l_orderkey JOIN customer c ON c.c_custkey = o.o_custkey JOIN nation n ON n.n_nationkey = c.c_nationkey GROUP BY n.n_name ORDER BY n.n_name",
+    "runs": 30,
+    "exact_s": 0.035201072692871094,
+    "approx_s": 0.038057208992540836,
+    "speedup": 0.9249515039258517,
+    "mean_error_pct": 2.3339713634168775,
+    "worst_error_pct": 9.16501538840713,
+    "ci_coverage": 0.9266666666666666,
+    "median_ci_pct": 5.280231745661062,
+    "sample_rate": 0.5,
+    "stop_reasons": [
+      "needs_exact"
+    ],
+    "exact_pushed_to_source": false,
+    "setting": "local",
+    "preset": "accurate"
+  },
+  {
+    "query": "Rfam full_region (10.6M rows)",
+    "sql": "SELECT is_significant, COUNT(*), AVG(bit_score) FROM rfam.full_region GROUP BY is_significant ORDER BY is_significant",
+    "runs": 5,
+    "exact_s": 60.69747614860535,
+    "approx_s": 0.014408333983737975,
+    "speedup": 4212.664435535143,
+    "mean_error_pct": 0.8623295630334916,
+    "worst_error_pct": 1.4893891586336294,
+    "ci_coverage": 1.0,
+    "median_ci_pct": 2.536287466848184,
+    "sample_rate": 0.01,
+    "stop_reasons": [
+      "stored_sample"
+    ],
+    "exact_pushed_to_source": true,
+    "setting": "remote",
+    "preset": "balanced",
+    "local_copies": []
+  },
+  {
+    "query": "Rfam full_region JOIN family",
+    "sql": "SELECT f.type, COUNT(*) AS hits, AVG(r.bit_score) AS avg_score FROM rfam.full_region r JOIN rfam.family f ON f.rfam_acc = r.rfam_acc GROUP BY f.type ORDER BY hits DESC LIMIT 10",
+    "runs": 5,
+    "exact_s": 67.07871198654175,
+    "approx_s": 3.4024805829976685,
+    "speedup": 19.714649459496332,
+    "mean_error_pct": 1.181129847413638,
+    "worst_error_pct": 6.064398091013437,
+    "ci_coverage": 0.9,
+    "median_ci_pct": 5.5627526190246215,
+    "sample_rate": 0.01,
+    "stop_reasons": [
+      "stored_sample"
+    ],
+    "exact_pushed_to_source": true,
+    "setting": "remote",
+    "preset": "balanced",
+    "local_copies": []
+  },
+  {
+    "query": "Rfam full_region JOIN family (family copied locally)",
+    "sql": "SELECT f.type, COUNT(*) AS hits, AVG(r.bit_score) AS avg_score FROM rfam.full_region r JOIN rfam.family f ON f.rfam_acc = r.rfam_acc GROUP BY f.type ORDER BY hits DESC LIMIT 10",
+    "runs": 5,
+    "exact_s": 67.01049399375916,
+    "approx_s": 0.037695375038310885,
+    "speedup": 1777.6847670478003,
+    "mean_error_pct": 1.181129847413637,
+    "worst_error_pct": 6.064398091013437,
+    "ci_coverage": 0.9,
+    "median_ci_pct": 5.5627526190246215,
+    "sample_rate": 0.01,
+    "stop_reasons": [
+      "stored_sample"
+    ],
+    "exact_pushed_to_source": true,
+    "setting": "remote",
+    "preset": "balanced",
+    "local_copies": [
+      "rfam.family"
+    ]
+  },
+  {
+    "setting": "remote-build",
+    "sample_of": "rfam.full_region",
+    "fraction": 0.01,
+    "rows": 106868,
+    "build_s": 25.038254022598267
+  },
+  {
+    "setting": "remote-build",
+    "sample_of": "rfam.family",
+    "fraction": 1.0,
+    "rows": 4227,
+    "build_s": 17.2793869972229
+  }
+]

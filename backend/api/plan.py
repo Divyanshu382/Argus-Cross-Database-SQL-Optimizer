@@ -2,6 +2,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
+from backend.core.federation import references_connected_database
 from backend.core.plan_parser import parse_plan
 from backend.db import duckdb as duckdb_db
 from backend.db import mysql as mysql_db
@@ -14,6 +15,10 @@ router = APIRouter()
 def _fetch_plan(query: str, source: str) -> Any:
     source_key = source.lower().strip()
     if source_key == "duckdb":
+        # EXPLAIN ANALYZE runs the query; on a connected database that can
+        # take minutes, so only estimate those plans.
+        if references_connected_database(query):
+            return duckdb_db.explain_query(query, analyze=False)
         try:
             return duckdb_db.explain_query(query, analyze=True)
         except Exception:

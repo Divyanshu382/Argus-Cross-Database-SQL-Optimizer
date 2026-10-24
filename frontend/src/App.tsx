@@ -1,1236 +1,634 @@
-import { useState } from "react";
-import PlanGraph from "./components/PlanGraph";
-import QueryCacheSidebar from "./components/QueryCacheSidebar";
-import Spinner from "./components/Spinner";
+import { useCallback, useEffect, useRef, useState } from "react";
+import "./App.css";
+import AddSourceDialog from "./components/AddSourceDialog";
+import BestQueries from "./components/BestQueries";
+import QueryEditor, { type QueryEditorHandle } from "./components/QueryEditor";
+import ResultsView from "./components/ResultsView";
+import SourcesPanel from "./components/SourcesPanel";
+import TableDetail from "./components/TableDetail";
+import type { Advice, Comparison, Engine, ExecutePayload, ExecutionProgress, QueryResult, SelectedTable } from "./types";
+import { accuracy } from "./utils/compare";
 
-interface ExecutionProgress {
-  status?: string;
-  phase?: string;
-  message?: string;
-  current_sample_fraction?: number;
-  accuracy_target?: number;
-  iterations?: Array<{
-    sample_fraction: number;
-    rows_sampled: number;
-    elapsed_time: number;
-    convergence_error?: number | null;
-  }>;
-}
+const BACKEND = "http://127.0.0.1:8093";
 
-function App() {
-  const [tableName, setTableName] = useState<string | null>(null);
-  const [queryExact, setQueryExact] = useState("");
-  const [queryApprox, setQueryApprox] = useState("");
-  const [planExact, setPlanExact] = useState<any | null>(null);
-  const [planApprox, setPlanApprox] = useState<any | null>(null);
-  const [resultExact, setResultExact] = useState<any | null>(null);
-  const [resultApprox, setResultApprox] = useState<any | null>(null);
-  const [errorExact, setErrorExact] = useState<string | null>(null);
-  const [errorApprox, setErrorApprox] = useState<string | null>(null);
-  const [sourceExact, setSourceExact] = useState<
-    "duckdb" | "postgres" | "mysql"
-  >("duckdb");
-  const [sourceApprox, setSourceApprox] = useState<
-    "duckdb" | "postgres" | "mysql"
-  >("duckdb");
-  const [suggestedQueries, setSuggestedQueries] = useState<string[]>([]);
-  const [loadingExact, setLoadingExact] = useState(false);
-  const [loadingApprox, setLoadingApprox] = useState(false);
-  const [progressExact, setProgressExact] = useState<ExecutionProgress | null>(
-    null,
-  );
-  const [progressApprox, setProgressApprox] =
-    useState<ExecutionProgress | null>(null);
-  const [accuracyEnabledApprox, setAccuracyEnabledApprox] = useState(false);
-  const [accuracyTargetApprox, setAccuracyTargetApprox] = useState(92);
+// The sampler stops once every 95% interval is within ±(100 - target)%.
+const MARGINS = [
+  { label: "±20%", target: 80 },
+  { label: "±8%", target: 92 },
+  { label: "±2%", target: 98 },
+];
 
-  const backend = "http://127.0.0.1:8093";
-  const csvMode = tableName !== null;
+const PROFILES = [
+  { key: "fast", label: "Fast", note: "stops within 0.75 s" },
+  { key: "balanced", label: "Balanced", note: "stops within 1.5 s" },
+  { key: "accurate", label: "Accurate", note: "stops within 3 s" },
+] as const;
 
-  const makeRequestId = () =>
-    typeof crypto !== "undefined" && "randomUUID" in crypto
-      ? crypto.randomUUID()
-      : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+type Running = "both" | "exact" | "estimate" | "auto" | null;
+type Theme = "system" | "light" | "dark";
+type Profile = (typeof PROFILES)[number]["key"];
 
-  const startProgressPolling = (
-    requestId: string,
-    setProgress: (value: ExecutionProgress | null) => void,
-  ) => {
+const makeRequestId = () =>
+  typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+const toRows = (payload: ExecutePayload): unknown[][] => {
+  const rows = payload.rows ?? payload.result;
+  if (Array.isArray(rows)) return rows as unknown[][];
+  return rows === undefined ? [] : [[rows]];
+};
+
+const toResult = (query: string, data: ExecutePayload, cached = Boolean(data.cached)): QueryResult => ({
+  query,
+  rows: toRows(data),
+  columns: data.columns ?? [],
+  time: data.time ?? 0,
+  cached,
+  sampleRate: data.sample_rate ?? null,
+  stopReason: data.stop_reason ?? null,
+  neededFraction: data.needed_fraction ?? null,
+  sql: data.rewritten_query ?? data.iterations?.at(-1)?.sample_query ?? null,
+  ci: data.ci_rows ?? null,
+  maxRelativeCi: data.max_relative_ci ?? null,
+  storedSample: Boolean(data.stored_sample),
+  sampledTable: data.sampled_table ?? null,
+  warning: data.warning ?? null,
+  iterations: data.iterations ?? [],
+  profile: data.mode_profile ?? data.approx_mode ?? null,
+  accuracyTarget: data.accuracy_target ?? null,
+});
+
+const readTheme = (): Theme => {
+  try {
+    const saved = localStorage.getItem("argus-theme");
+    return saved === "light" || saved === "dark" ? saved : "system";
+  } catch {
+    return "system";
+  }
+};
+
+export default function App() {
+  const [selected, setSelected] = useState<SelectedTable | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [adding, setAdding] = useState(false);
+  const [showHowTo, setShowHowTo] = useState(false);
+  const [showBest, setShowBest] = useState(false);
+  const [theme, setTheme] = useState<Theme>(readTheme);
+
+  const [query, setQuery] = useState("");
+  const [engine, setEngine] = useState<Engine>("duckdb");
+  const [target, setTarget] = useState(92);
+  const [profile, setProfile] = useState<Profile>("balanced");
+  // Off forces fresh runs, so the times shown are real rather than cache lookups.
+  const [useCache, setUseCache] = useState(true);
+  const [cacheNote, setCacheNote] = useState<string | null>(null);
+
+  const [running, setRunning] = useState<Running>(null);
+  const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState<ExecutionProgress | null>(null);
+  const [exact, setExact] = useState<QueryResult | null>(null);
+  const [estimate, setEstimate] = useState<QueryResult | null>(null);
+  const [exactError, setExactError] = useState<string | null>(null);
+  const [estimateError, setEstimateError] = useState<string | null>(null);
+  const [comparison, setComparison] = useState<Comparison | null>(null);
+
+  // What the cost model predicted for the run on screen, asked just before it ran.
+  const [runAdvice, setRunAdvice] = useState<Advice | null>(null);
+  // Set when the cost model itself chose how the query ran (Auto).
+  const [autoChosen, setAutoChosen] = useState<"exact" | "approx" | null>(null);
+  // Time the normal (exact) query in the background after an estimate.
+  const [alsoNormal, setAlsoNormal] = useState(true);
+  const [normalRunning, setNormalRunning] = useState(false);
+  // Bumped by every new run, so a late background result from an older run is ignored.
+  const runToken = useRef(0);
+  const editor = useRef<QueryEditorHandle>(null);
+  const disabled = running !== null || busy;
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "system") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", theme);
+    try {
+      localStorage.setItem("argus-theme", theme);
+    } catch {
+      // Private windows may refuse storage; the theme still applies.
+    }
+  }, [theme]);
+
+  const pollProgress = (requestId: string) => {
     let active = true;
-
     const poll = async () => {
       if (!active) return;
       try {
-        const res = await fetch(
-          `${backend}/api/sql/execute/progress/${requestId}`,
-        );
+        const res = await fetch(`${BACKEND}/api/sql/execute/progress/${requestId}`);
         if (res.ok) {
           const data = (await res.json()) as ExecutionProgress;
           setProgress(data);
-          if (data.status === "completed" || data.status === "error") {
-            active = false;
-            return;
-          }
+          if (data.status === "completed" || data.status === "error") return;
         }
       } catch {
         return;
       }
-      if (active) {
-        setTimeout(poll, 350);
-      }
+      if (active) setTimeout(poll, 350);
     };
-
     void poll();
     return () => {
       active = false;
     };
   };
 
-  // -----------------------
-  // Upload CSV
-  // -----------------------
-  const handleUpload = async (e: any) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const form = new FormData();
-    form.append("file", file);
-    const res = await fetch(`${backend}/api/upload`, {
+  const execute = async (sql: string, mode: string, requestId?: string) => {
+    const res = await fetch(`${BACKEND}/api/sql/execute`, {
       method: "POST",
-      body: form,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: sql,
+        mode,
+        source: engine,
+        request_id: requestId,
+        accuracy_target: mode === "exact" ? undefined : target,
+        profile: mode === "exact" ? undefined : profile,
+        use_cache: useCache,
+      }),
     });
-    const data = await res.json();
-    if (!data.table_name) {
-      alert("Upload failed");
-      return;
-    }
-    const tbl = data.table_name;
-    setTableName(tbl);
-    setSourceExact("duckdb");
-    setSourceApprox("duckdb");
-    setSuggestedQueries([
-      `SELECT * FROM ${tbl} LIMIT 5;`,
-      `SELECT COUNT(*) FROM ${tbl};`,
-      `SELECT AVG(salary) FROM ${tbl};`,
-    ]);
+    return { ok: res.ok, data: (await res.json()) as ExecutePayload };
   };
 
-  // -----------------------
-  // Analyze
-  // -----------------------
-  const handleAnalyze = async (panel: "exact" | "approx") => {
-    const query = panel === "exact" ? queryExact : queryApprox;
-    const source = panel === "exact" ? sourceExact : sourceApprox;
-    const setError = panel === "exact" ? setErrorExact : setErrorApprox;
-    const setPlan = panel === "exact" ? setPlanExact : setPlanApprox;
-    const setLoading = panel === "exact" ? setLoadingExact : setLoadingApprox;
-    if (!query.trim()) return;
-    setError(null);
-    setLoading(true);
+  const unreachable = `Can't reach the backend at ${BACKEND}. Is it running?`;
+
+  // The cost model's prediction, made before the query runs, so it can be
+  // set against the measured times afterwards.
+  const adviseFor = async (sql: string): Promise<Advice | null> => {
+    if (engine !== "duckdb") return null;
     try {
-      const res = await fetch(`${backend}/api/sql/parse-plan`, {
+      const res = await fetch(`${BACKEND}/api/advise`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, source: csvMode ? "duckdb" : source }),
+        body: JSON.stringify({ query: sql, source: engine, accuracy_target: target }),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data?.detail || "Failed to analyze query");
-        return;
-      }
-      setPlan(data.plan_tree ?? null);
-    } finally {
-      setLoading(false);
+      return res.ok ? ((await res.json()) as Advice) : null;
+    } catch {
+      return null;
     }
   };
 
-  // -----------------------
-  // Execute
-  // -----------------------
-  const handleExecute = async (panel: "exact" | "approx") => {
-    const query = panel === "exact" ? queryExact : queryApprox;
-    const source = panel === "exact" ? sourceExact : sourceApprox;
-    const setError = panel === "exact" ? setErrorExact : setErrorApprox;
-    const setResult = panel === "exact" ? setResultExact : setResultApprox;
-    const setLoading = panel === "exact" ? setLoadingExact : setLoadingApprox;
-    const setProgress =
-      panel === "exact" ? setProgressExact : setProgressApprox;
-    if (!query.trim()) return;
-    setError(null);
+  const begin = (kind: Running) => {
+    runToken.current += 1;
+    setRunAdvice(null);
+    setAutoChosen(null);
+    setNormalRunning(false);
+    setRunning(kind);
     setProgress(null);
-    setLoading(true);
+    setComparison(null);
+    setExactError(null);
+    setEstimateError(null);
+  };
+
+  // Both ways in one benchmark request, so the timings are measured back to
+  // back on the same data.
+  const runBoth = async (sql: string = query) => {
+    if (!sql.trim() || disabled) return;
+    begin("both");
+    const advice = await adviseFor(sql);
+    setRunAdvice(advice);
+    const predicted = advice?.predicted_speedup ?? null;
     const requestId = makeRequestId();
-    const stopPolling = startProgressPolling(requestId, setProgress);
+    const stop = pollProgress(requestId);
     try {
-      const res = await fetch(`${backend}/api/sql/execute`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          query,
-          mode: panel,
-          source: csvMode ? "duckdb" : source,
-          request_id: requestId,
-          accuracy_target:
-            panel === "approx" && accuracyEnabledApprox
-              ? accuracyTargetApprox
-              : undefined,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setResult(null);
-        setError(data?.detail || "Query execution failed");
+      const { ok, data } = await execute(sql, "benchmark", requestId);
+      if (!ok) {
+        // Usually a query the sampler can't estimate; the exact answer still stands.
+        setEstimate(null);
+        setEstimateError(data?.detail ?? "This query can't be estimated.");
+        const exactRun = await execute(sql, "exact");
+        if (exactRun.ok) setExact(toResult(sql, exactRun.data));
+        else {
+          setExact(null);
+          setExactError(exactRun.data?.detail ?? "Query failed.");
+        }
         return;
       }
-      setResult(data);
+      setExact(toResult(sql, { ...(data.exact ?? {}), rows: undefined }, Boolean(data.cached)));
+      setEstimate(toResult(sql, data.approx ?? {}, Boolean(data.cached)));
+      setComparison({
+        speedup: data.speedup ?? null,
+        predictedSpeedup: predicted,
+        errorPercent: data.error_percent ?? null,
+        coverage: data.ci_coverage ?? null,
+      });
+    } catch {
+      setExactError(unreachable);
     } finally {
-      stopPolling();
-      setLoading(false);
+      stop();
+      setRunning(null);
     }
   };
 
-  // -----------------------
-  // Result Table renderer
-  // -----------------------
-  const renderAccuracyControl = () => (
-    <div
-      style={{
-        background: accuracyEnabledApprox
-          ? "linear-gradient(135deg, rgba(245,184,74,0.16), rgba(186,117,23,0.08))"
-          : "linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02))",
-        border: accuracyEnabledApprox
-          ? "0.5px solid rgba(245,184,74,0.28)"
-          : "0.5px solid rgba(255,255,255,0.08)",
-        borderRadius: "12px",
-        padding: "14px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        opacity: accuracyEnabledApprox ? 1 : 0.62,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: "12px",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <input
-            type="checkbox"
-            checked={accuracyEnabledApprox}
-            onChange={(e) => setAccuracyEnabledApprox(e.target.checked)}
-            style={{ accentColor: "#f5b84a" }}
-          />
-          <div>
-            <div
-              style={{ fontSize: "12px", color: "#f0d2a3", fontWeight: 700 }}
-            >
-              Accuracy-Speed Tradeoff
-            </div>
-            <div
-              style={{ fontSize: "11px", color: "#b5976b", marginTop: "2px" }}
-            >
-              Optional. Enable only if you want a specific target.
-            </div>
-          </div>
-        </div>
-        <div
-          style={{
-            minWidth: "72px",
-            textAlign: "center",
-            padding: "8px 10px",
-            borderRadius: "999px",
-            background: "rgba(15,15,15,0.55)",
-            color: "#fff3da",
-            fontSize: "18px",
-            fontWeight: 700,
-          }}
-        >
-          {accuracyTargetApprox}%
-        </div>
-      </div>
-      <input
-        type="range"
-        min={70}
-        max={99}
-        step={1}
-        value={accuracyTargetApprox}
-        onChange={(e) => setAccuracyTargetApprox(Number(e.target.value))}
-        disabled={!accuracyEnabledApprox}
-        style={{ width: "100%", accentColor: "#f5b84a" }}
-      />
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "8px",
-        }}
-      >
-        {[
-          { label: "Fast", value: 80, note: "lower latency" },
-          { label: "Balanced", value: 92, note: "daily use" },
-          { label: "Accurate", value: 98, note: "deeper scan" },
-        ].map((preset) => (
-          <button
-            key={preset.label}
-            type="button"
-            onClick={() => setAccuracyTargetApprox(preset.value)}
-            disabled={!accuracyEnabledApprox}
-            style={{
-              padding: "10px 12px",
-              borderRadius: "10px",
-              border:
-                accuracyTargetApprox === preset.value
-                  ? "0.5px solid rgba(245,184,74,0.5)"
-                  : "0.5px solid rgba(255,255,255,0.08)",
-              background:
-                accuracyTargetApprox === preset.value
-                  ? "rgba(245,184,74,0.18)"
-                  : "rgba(255,255,255,0.03)",
-              color:
-                accuracyTargetApprox === preset.value ? "#fff0cf" : "#bcb2a1",
-            }}
-          >
-            <div style={{ fontSize: "12px", fontWeight: 700 }}>
-              {preset.label}
-            </div>
-            <div style={{ fontSize: "10px", marginTop: "2px" }}>
-              {preset.value}% • {preset.note}
-            </div>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderResult = (
-    result: any,
-    error: string | null,
-    source: string,
-    loading: boolean = false,
-    progress: ExecutionProgress | null = null,
-  ) => (
-    <div style={{ marginTop: "12px" }}>
-      {error && (
-        <div
-          style={{
-            color: "#ff6b6b",
-            fontSize: "12px",
-            padding: "10px 12px",
-            background: "rgba(255,107,107,0.1)",
-            borderRadius: "8px",
-            border: "0.5px solid rgba(255,107,107,0.3)",
-            display: "flex",
-            alignItems: "flex-start",
-            gap: "8px",
-          }}
-        >
-          <span style={{ fontSize: "14px", marginTop: "1px", flexShrink: 0 }}>
-            ⚠️
-          </span>
-          <div>
-            <strong style={{ display: "block", marginBottom: "3px" }}>
-              Error
-            </strong>
-            <span>{error}</span>
-          </div>
-        </div>
-      )}
-      {loading && (
-        <div
-          style={{
-            padding: "16px 12px",
-            color: "#888",
-            fontSize: "13px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            gap: "8px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "10px",
-            }}
-          >
-            <Spinner size={14} />
-            <span>{progress?.message ?? "Executing query…"}</span>
-          </div>
-          {progress && (
-            <div
-              style={{
-                width: "100%",
-                padding: "10px 12px",
-                background: "rgba(255,255,255,0.03)",
-                border: "0.5px solid rgba(255,255,255,0.08)",
-                borderRadius: "8px",
-                fontSize: "12px",
-                color: "#aab4bf",
-              }}
-            >
-              <div>Phase: {progress.phase ?? "running"}</div>
-              {typeof progress.current_sample_fraction === "number" && (
-                <div>
-                  Sample: {(progress.current_sample_fraction * 100).toFixed(0)}%
-                </div>
-              )}
-              {typeof progress.accuracy_target === "number" && (
-                <div>
-                  Target accuracy: {progress.accuracy_target.toFixed(0)}%
-                </div>
-              )}
-              {progress.iterations && progress.iterations.length > 0 && (
-                <div>
-                  Latest iteration: sampled{" "}
-                  {
-                    progress.iterations[progress.iterations.length - 1]
-                      .rows_sampled
-                  }{" "}
-                  rows
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-      {result && !loading && (
-        <div style={{ marginTop: "8px" }}>
-          {result.cached && (
-            <div
-              style={{
-                background: "rgba(90, 170, 245, 0.12)",
-                border: "0.5px solid rgba(90, 170, 245, 0.3)",
-                padding: "8px 12px",
-                borderRadius: "6px",
-                marginBottom: "8px",
-                fontSize: "12px",
-                color: "#5aaaf5",
-                fontWeight: 600,
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
-            >
-              <span style={{ fontSize: "14px" }}>⚡</span>
-              <span>Result loaded from cache</span>
-            </div>
-          )}
-          <div
-            style={{
-              fontSize: "12px",
-              color: "#888",
-              marginBottom: "8px",
-              display: "flex",
-              gap: "14px",
-              flexWrap: "wrap",
-            }}
-          >
-            <span>
-              Mode:{" "}
-              <span style={{ color: "#ccc" }}>
-                {result.approx ? "approx" : "exact"}
-              </span>
-            </span>
-            {result.accuracy_target && (
-              <span>
-                Accuracy target:{" "}
-                <span style={{ color: "#f0d2a3" }}>
-                  {result.accuracy_target}%
-                </span>
-              </span>
-            )}
-            <span>
-              Source:{" "}
-              <span style={{ color: "#ccc" }}>{result.source ?? source}</span>
-            </span>
-            <span>
-              {result.cached ? "Cache load time: " : "Time: "}
-              <span style={{ color: result.cached ? "#5aaaf5" : "#ccc" }}>
-                {typeof result.cache_load_time === "number"
-                  ? `${result.cache_load_time.toFixed(6)}s`
-                  : typeof result.time === "number"
-                    ? `${result.time.toFixed(6)}s`
-                    : "n/a"}
-              </span>
-            </span>
-            {result.cached && (
-              <span>
-                Old time:{" "}
-                <span style={{ color: "#ccc" }}>
-                  {typeof result.old_time === "number"
-                    ? `${result.old_time.toFixed(6)}s`
-                    : "n/a"}
-                </span>
-              </span>
-            )}
-            {!result.cached && (
-              <span style={{ display: "none" }}>
-                {typeof result.time === "number"
-                  ? `${result.time.toFixed(6)}s`
-                  : "n/a"}
-              </span>
-            )}
-            {result.sample_rate && (
-              <span>
-                Sample rate:{" "}
-                <span style={{ color: "#ccc" }}>{result.sample_rate}</span>
-              </span>
-            )}
-          </div>
-
-          {result.rewritten_query && (
-            <div style={{ marginBottom: "10px" }}>
-              <div
-                style={{ fontSize: "12px", color: "#888", marginBottom: "4px" }}
-              >
-                Rewritten query:
-              </div>
-              <pre
-                style={{
-                  background: "#111",
-                  padding: "8px 10px",
-                  borderRadius: "6px",
-                  fontSize: "11px",
-                  overflowX: "auto",
-                  margin: 0,
-                }}
-              >
-                {result.rewritten_query}
-              </pre>
-            </div>
-          )}
-
-          {Array.isArray(result.rows) && result.rows.length > 0 && (
-            <div style={{ overflowX: "auto" }}>
-              <table
-                style={{
-                  width: "100%",
-                  borderCollapse: "collapse",
-                  fontSize: "12px",
-                }}
-              >
-                <thead>
-                  <tr>
-                    {(result.columns ?? []).map((c: string) => (
-                      <th
-                        key={c}
-                        style={{
-                          border: "0.5px solid #333",
-                          padding: "6px 10px",
-                          background: "#1a1a1a",
-                          color: "#aaa",
-                          textAlign: "left",
-                          fontWeight: 500,
-                        }}
-                      >
-                        {c}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {result.rows.map((row: any[], idx: number) => (
-                    <tr
-                      key={idx}
-                      style={{ background: idx % 2 === 0 ? "#141414" : "#111" }}
-                    >
-                      {row.map((v, i) => (
-                        <td
-                          key={i}
-                          style={{
-                            border: "0.5px solid #2a2a2a",
-                            padding: "5px 10px",
-                            color: "#e0ddd8",
-                          }}
-                        >
-                          {String(v)}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-
-          {!Array.isArray(result.rows) && result.result !== undefined && (
-            <pre
-              style={{
-                background: "#111",
-                padding: "10px",
-                borderRadius: "6px",
-                fontSize: "11px",
-                overflowX: "auto",
-              }}
-            >
-              {JSON.stringify(result.result, null, 2)}
-            </pre>
-          )}
-
-          {Array.isArray(result.rows) && result.rows.length === 0 && (
-            <p style={{ color: "#666", fontSize: "13px" }}>No rows returned.</p>
-          )}
-        </div>
-      )}
-      {!result && !error && !loading && (
-        <div
-          style={{
-            color: "#444",
-            fontSize: "12px",
-            fontStyle: "italic",
-            padding: "8px 0",
-          }}
-        >
-          Results will appear here…
-        </div>
-      )}
-    </div>
-  );
-
-  // Handle query click from cache sidebar
-  const handleCacheQueryClick = (query: string, source: string) => {
-    setQueryExact(query);
-    setSourceExact(source as "duckdb" | "postgres" | "mysql");
-    // Auto-execute in 100ms
-    setTimeout(() => {
-      handleExecute("exact");
-    }, 100);
+  const runOne = async (mode: "exact" | "approx") => {
+    if (!query.trim() || disabled) return;
+    const sql = query;
+    begin(mode === "exact" ? "exact" : "estimate");
+    const advice = await adviseFor(sql);
+    setRunAdvice(advice);
+    const requestId = makeRequestId();
+    const stop = pollProgress(requestId);
+    const setResult = mode === "exact" ? setExact : setEstimate;
+    const setError = mode === "exact" ? setExactError : setEstimateError;
+    try {
+      const { ok, data } = await execute(sql, mode, requestId);
+      if (!ok) {
+        setResult(null);
+        setError(data?.detail ?? "Query failed.");
+        return;
+      }
+      const result = toResult(sql, data);
+      setResult(result);
+      if (mode === "approx" && alsoNormal) void timeNormal(sql, result, advice?.predicted_speedup ?? null);
+    } catch {
+      setError(unreachable);
+    } finally {
+      stop();
+      setRunning(null);
+    }
   };
+
+  // Auto: the cost model predicts both times and the backend runs only the
+  // faster way, so an estimate is never used where it would be slower.
+  const runAuto = async () => {
+    if (!query.trim() || disabled) return;
+    const sql = query;
+    begin("auto");
+    const requestId = makeRequestId();
+    const stop = pollProgress(requestId);
+    try {
+      const { ok, data } = await execute(sql, "auto", requestId);
+      if (!ok) {
+        setExact(null);
+        setEstimate(null);
+        setExactError(data?.detail ?? "Query failed.");
+        return;
+      }
+      const choice = data.auto_choice;
+      if (choice) {
+        setRunAdvice({
+          recommendation: choice.recommendation === "estimate" ? "estimate" : "exact",
+          method: choice.method === "model" ? "model" : "rule",
+          reason: choice.reason ?? "",
+          approximable: true,
+          predicted_exact_seconds: choice.predicted_exact_seconds ?? undefined,
+          predicted_estimate_seconds: choice.predicted_estimate_seconds ?? undefined,
+          predicted_speedup: choice.predicted_speedup ?? undefined,
+          threshold: choice.threshold ?? undefined,
+        });
+        setAutoChosen(choice.chosen);
+      }
+      const result = toResult(sql, data);
+      if (choice?.chosen === "approx") {
+        setExact(null);
+        setEstimate(result);
+        if (alsoNormal) void timeNormal(sql, result, choice.predicted_speedup ?? null);
+      } else {
+        setEstimate(null);
+        setExact(result);
+      }
+    } catch {
+      setExactError(unreachable);
+    } finally {
+      stop();
+      setRunning(null);
+    }
+  };
+
+  // The estimate is on screen already; run the normal query behind it and
+  // fill in its time, the speedup and the accuracy when it finishes.
+  const timeNormal = async (sql: string, estimated: QueryResult, predicted: number | null) => {
+    const token = runToken.current;
+    setExact(null);
+    setNormalRunning(true);
+    try {
+      const { ok, data } = await execute(sql, "exact");
+      if (token !== runToken.current) return;
+      if (!ok) {
+        setExactError(data?.detail ?? "The normal query failed.");
+        return;
+      }
+      const normal = toResult(sql, data);
+      setExact(normal);
+      setComparison({
+        speedup: normal.time / Math.max(estimated.time, 1e-9),
+        predictedSpeedup: predicted,
+        ...accuracy(normal, estimated),
+      });
+    } catch {
+      if (token === runToken.current) setExactError(unreachable);
+    } finally {
+      if (token === runToken.current) setNormalRunning(false);
+    }
+  };
+
+  // Picking a query loads it without running it, so results from the
+  // previous query are cleared rather than shown against the new one.
+  const applyQuery = (sql: string) => {
+    setQuery(sql);
+    setEngine("duckdb");
+    if (running !== null) return;
+    runToken.current += 1;
+    setNormalRunning(false);
+    setExact(null);
+    setEstimate(null);
+    setExactError(null);
+    setEstimateError(null);
+    setComparison(null);
+    setRunAdvice(null);
+    setAutoChosen(null);
+  };
+
+  const clearCache = async () => {
+    try {
+      const res = await fetch(`${BACKEND}/api/cache/clear?clear_history=false`, { method: "POST" });
+      setCacheNote(res.ok ? "Cache cleared" : "Could not clear the cache");
+    } catch {
+      setCacheNote(unreachable);
+    }
+    setTimeout(() => setCacheNote(null), 2500);
+  };
+
+  const sourcesChanged = useCallback((select?: SelectedTable) => {
+    setRefreshKey((k) => k + 1);
+    setAdding(false);
+    if (select) setSelected(select);
+  }, []);
+
+  const closeDialog = useCallback(() => setAdding(false), []);
+
+  const runningMessage =
+    running === null
+      ? null
+      : progress?.message ??
+        (running === "both"
+          ? "Running the exact query, then the estimate"
+          : running === "exact"
+            ? "Running the exact query"
+            : running === "auto"
+              ? "The cost model is choosing the faster way, then running it"
+              : "Sampling");
+
+  const nothingYet = !exact && !estimate && !exactError && !estimateError && running === null;
 
   return (
-    <>
-      <QueryCacheSidebar
-        onQueryClick={handleCacheQueryClick}
-        currentQuery={queryExact}
-      />
-      <div
-        style={{
-          padding: "28px 32px 40px",
-          color: "white",
-          background:
-            "radial-gradient(circle at top left, rgba(90,170,245,0.12), transparent 28%), radial-gradient(circle at top right, rgba(245,184,74,0.10), transparent 24%), #0f0f0f",
-          minHeight: "100vh",
-          fontFamily: "'Syne', sans-serif",
-        }}
-      >
-        <div
-          style={{
-            marginBottom: "24px",
-            padding: "20px 22px",
-            borderRadius: "18px",
-            background:
-              "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015))",
-            border: "0.5px solid rgba(255,255,255,0.08)",
-            boxShadow: "0 24px 60px rgba(0,0,0,0.25)",
-          }}
-        >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "6px 10px",
-              borderRadius: "999px",
-              // background: "rgba(90,170,245,0.12)",
-              // border: "0.5px solid rgba(90,170,245,0.24)",
-              // color: "#9dccfb",
-              fontSize: "11px",
-              fontWeight: 700,
-              letterSpacing: "0.3px",
-              textTransform: "uppercase",
-              marginBottom: "14px",
-            }}
-          >
-            Runtime Sampling Workspace
-          </div>
-          <h1
-            style={{
-              fontSize: "2.2rem",
-              fontWeight: 700,
-              letterSpacing: "-0.8px",
-              marginBottom: "6px",
-            }}
-          >
-            AetherQuery Executor
-          </h1>
-          <p style={{ color: "#7f8791", fontSize: "14px", maxWidth: "760px" }}>
-            Run exact and approximate analytics side by side, tune the target
-            accuracy, and watch the sampler refine results while it executes.
-          </p>
+    <div className="app">
+      <header className="topbar">
+        <div className="brand">
+          <span className="brand-name">
+            Argus<span>.</span>
+          </span>
+          <span className="brand-sub">Exact and estimated SQL across your databases</span>
         </div>
-
-        {/* Upload bar */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "14px",
-            padding: "10px 16px",
-            background: "#1a1a1a",
-            border: "0.5px solid rgba(255,255,255,0.1)",
-            borderRadius: "8px",
-            marginBottom: "20px",
-          }}
-        >
-          <label
-            style={{
-              fontSize: "13px",
-              fontWeight: 600,
-              color: "#888",
-              whiteSpace: "nowrap",
-            }}
+        <div className="topbar-actions">
+          <button
+            className="btn-quiet"
+            aria-pressed={showBest}
+            onClick={() => setShowBest(!showBest)}
           >
-            Upload CSV
-          </label>
-          <input
-            type="file"
-            onChange={handleUpload}
-            style={{
-              fontSize: "13px",
-              color: "#ccc",
-              flex: 1,
-              background: "transparent",
-              border: "none",
-              outline: "none",
-              cursor: "pointer",
-            }}
-          />
-          {tableName && (
-            <span
-              style={{
-                fontSize: "12px",
-                color: "#5aaaf5",
-                whiteSpace: "nowrap",
-              }}
-            >
-              ✓ {tableName}
-            </span>
+            Recommended queries
+          </button>
+          <button className="btn-quiet" aria-expanded={showHowTo} onClick={() => setShowHowTo(!showHowTo)}>
+            How it works
+          </button>
+          <button
+            className="btn-quiet"
+            onClick={() => setTheme(theme === "system" ? "dark" : theme === "dark" ? "light" : "system")}
+            title="Switch between system, dark and light themes"
+          >
+            Theme: {theme}
+          </button>
+        </div>
+        {showHowTo && (
+          <div className="howto" role="dialog" aria-label="How Argus works">
+            <h2>How Argus works</h2>
+            <ol>
+              <li>
+                Add sources on the left: files, PostgreSQL, MySQL or MongoDB. One query can join tables from all of
+                them.
+              </li>
+              <li>
+                The <b className="exact">exact</b> answer reads every row. When all tables live in one database, the
+                whole query runs there, translated to its dialect (a MongoDB aggregation pipeline for MongoDB).
+              </li>
+              <li>
+                The <b className="estimate">estimate</b> reads a random sample and scales it up. Each value comes with
+                a 95% interval: the true value lies inside it 19 times out of 20. The margin you pick (±20%, ±8%,
+                ±2%) decides how large a sample to take.
+              </li>
+              <li>
+                For tables in other databases, estimates use a sample stored on this computer, built once from the
+                table's panel, so they never wait on the network.
+              </li>
+            </ol>
+          </div>
+        )}
+      </header>
+
+      <div className="workbench">
+        <aside className="sidebar" aria-label="Data sources">
+          <div className="sidebar-head">
+            <span className="eyebrow">Sources</span>
+            <button className="btn btn-small" onClick={() => setAdding(true)} disabled={disabled}>
+              Add source
+            </button>
+          </div>
+          <div className="sidebar-scroll">
+            <SourcesPanel
+              backend={BACKEND}
+              refreshKey={refreshKey}
+              selected={selected}
+              onSelect={setSelected}
+              onChanged={() => sourcesChanged()}
+              disabled={disabled}
+            />
+          </div>
+          {selected && (
+            <TableDetail
+              key={selected.relation}
+              backend={BACKEND}
+              table={selected}
+              disabled={disabled}
+              onInsert={(text) => editor.current?.insert(text)}
+              onUseQuery={applyQuery}
+              onLoadingChange={setBusy}
+            />
           )}
-        </div>
+        </aside>
 
-        {csvMode && (
-          <p
-            style={{
-              color: "#5aaaf5",
-              fontSize: "12px",
-              marginBottom: "16px",
-              padding: "6px 12px",
-              background: "rgba(24,95,165,0.1)",
-              borderRadius: "6px",
-              border: "0.5px solid rgba(90,170,245,0.2)",
-            }}
-          >
-            CSV mode active — queries are locked to DuckDB
-          </p>
-        )}
-
-        {/* Suggested queries */}
-        {tableName && suggestedQueries.length > 0 && (
-          <div style={{ marginBottom: "20px" }}>
-            <div
-              style={{
-                fontSize: "12px",
-                color: "#666",
-                marginBottom: "8px",
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.5px",
-              }}
-            >
-              Suggested Queries
+        <main className="main">
+          <div className="editor-card">
+            <div className="editor-head">
+              <span className="context">
+                {engine === "duckdb" ? (
+                  <>Any source on the left, by name, e.g. <code>{selected?.relation ?? "rfam.family"}</code></>
+                ) : (
+                  <>Runs directly on the {engine === "postgres" ? "PostgreSQL" : "MySQL"} server configured for the backend</>
+                )}
+              </span>
+              <select className="select" value={engine} onChange={(e) => setEngine(e.target.value as Engine)} aria-label="Engine">
+                <option value="duckdb">Argus engine</option>
+                <option value="postgres">Server PostgreSQL</option>
+                <option value="mysql">Server MySQL</option>
+              </select>
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-              {suggestedQueries.map((q, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    background: "#1a1a1a",
-                    border: "0.5px solid #2a2a2a",
-                    borderRadius: "6px",
-                    padding: "6px 10px",
-                  }}
-                >
-                  <code style={{ fontSize: "12px", color: "#bbb" }}>{q}</code>
-                  <button
-                    onClick={() => {
-                      setQueryExact(q);
-                      setQueryApprox(q);
-                    }}
-                    style={{
-                      fontSize: "11px",
-                      padding: "3px 8px",
-                      background: "#2a2a2a",
-                      color: "#aaa",
-                      border: "0.5px solid #3a3a3a",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Use
+            <QueryEditor
+              ref={editor}
+              value={query}
+              onChange={setQuery}
+              onRun={() => void runBoth()}
+              placeholder={"Start typing: suggestions for the table you name (or pick on the left)\nappear below. Tab accepts one."}
+              backend={BACKEND}
+              defaultTable={selected?.relation ?? null}
+              refreshKey={refreshKey}
+            />
+          </div>
+
+          <div className="controls" aria-label="Run settings">
+            <div className="control">
+              <span className="control-label">Estimate margin</span>
+              <div className="control-row">
+                <div className="segmented" role="group" aria-label="Estimate margin presets">
+                  {MARGINS.map((m) => (
+                    <button key={m.target} aria-pressed={target === m.target} onClick={() => setTarget(m.target)}>
+                      {m.label}
+                    </button>
+                  ))}
+                </div>
+                <input
+                  type="range"
+                  className="range"
+                  min={80}
+                  max={99.5}
+                  step={0.5}
+                  value={target}
+                  onChange={(e) => setTarget(Number(e.target.value))}
+                  aria-label="Estimate margin"
+                />
+                <output className="control-value">±{(100 - target).toFixed(1).replace(/\.0$/, "")}%</output>
+              </div>
+              <span className="control-note">95% intervals must fit inside this; tighter takes a bigger sample</span>
+            </div>
+            <div className="control">
+              <span className="control-label">Sampler</span>
+              <div className="segmented" role="group" aria-label="Sampler profile">
+                {PROFILES.map((p) => (
+                  <button key={p.key} aria-pressed={profile === p.key} onClick={() => setProfile(p.key)} title={p.note}>
+                    {p.label}
                   </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Two columns */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "14px",
-          }}
-        >
-          {/* EXACT PANEL */}
-          <div
-            style={{
-              background: "#141414",
-              border: "0.5px solid rgba(255,255,255,0.08)",
-              borderRadius: "12px",
-              overflow: "hidden",
-              boxShadow: "0 20px 45px rgba(0,0,0,0.18)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                padding: "12px 16px",
-                borderBottom: "0.5px solid rgba(255,255,255,0.06)",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  letterSpacing: "0.8px",
-                  textTransform: "uppercase",
-                  padding: "3px 9px",
-                  borderRadius: "4px",
-                  background: "rgba(24,95,165,0.18)",
-                  color: "#5aaaf5",
-                }}
-              >
-                Exact
-              </span>
-              <span style={{ fontSize: "14px", fontWeight: 600 }}>
-                Exact Mode
-              </span>
-              <span
-                style={{ fontSize: "12px", color: "#444", marginLeft: "auto" }}
-              >
-                Precise results
-              </span>
-            </div>
-            <div
-              style={{
-                padding: "16px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-              }}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
-                <span
-                  style={{ fontSize: "12px", color: "#666", minWidth: "52px" }}
-                >
-                  Source
-                </span>
-                <select
-                  value={sourceExact}
-                  onChange={(e) => setSourceExact(e.target.value as any)}
-                  disabled={csvMode}
-                  style={{
-                    fontFamily: "inherit",
-                    fontSize: "13px",
-                    padding: "5px 10px",
-                    borderRadius: "6px",
-                    border: "0.5px solid rgba(255,255,255,0.12)",
-                    background: "#1e1e1e",
-                    color: "#ccc",
-                    cursor: csvMode ? "not-allowed" : "pointer",
-                    opacity: csvMode ? 0.5 : 1,
-                  }}
-                >
-                  <option value="duckdb">duckdb</option>
-                  <option value="postgres">postgres</option>
-                  <option value="mysql">mysql</option>
-                </select>
-                {csvMode && (
-                  <span style={{ fontSize: "11px", color: "#555" }}>
-                    locked to duckdb
-                  </span>
-                )}
+                ))}
               </div>
-              <textarea
-                value={queryExact}
-                onChange={(e) => setQueryExact(e.target.value)}
-                placeholder="SELECT * FROM data LIMIT 10;"
-                style={{
-                  width: "100%",
-                  minHeight: "130px",
-                  padding: "10px 12px",
-                  background: "#1a1a1a",
-                  border: "0.5px solid rgba(255,255,255,0.08)",
-                  borderRadius: "8px",
-                  color: "#e0ddd8",
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "12.5px",
-                  lineHeight: 1.65,
-                  resize: "vertical",
-                  outline: "none",
-                }}
-              />
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "8px",
-                }}
-              >
-                <button
-                  onClick={() => handleAnalyze("exact")}
-                  disabled={loadingExact}
-                  style={{
-                    padding: "9px 12px",
-                    fontFamily: "inherit",
-                    fontWeight: 600,
-                    fontSize: "13px",
-                    borderRadius: "8px",
-                    border: "0.5px solid rgba(24,95,165,0.3)",
-                    background: loadingExact
-                      ? "rgba(24,95,165,0.1)"
-                      : "rgba(24,95,165,0.15)",
-                    color: "#5aaaf5",
-                    cursor: loadingExact ? "not-allowed" : "pointer",
-                    opacity: loadingExact ? 0.6 : 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "6px",
-                  }}
-                >
-                  {loadingExact ? (
-                    <>
-                      <Spinner size={12} />
-                      Analyzing…
-                    </>
-                  ) : (
-                    "Analyze Query"
-                  )}
+              <span className="control-note">{PROFILES.find((p) => p.key === profile)?.note}, even if wider</span>
+            </div>
+            <div className="control">
+              <span className="control-label">Timing</span>
+              <label className="check">
+                <input type="checkbox" checked={useCache} onChange={(e) => setUseCache(e.target.checked)} />
+                reuse cached results
+              </label>
+              <label className="check" title="After an estimate, run the normal query in the background and compare">
+                <input type="checkbox" checked={alsoNormal} onChange={(e) => setAlsoNormal(e.target.checked)} />
+                time the normal query after an estimate
+              </label>
+              <span className="control-note">
+                <button className="btn-link" onClick={() => void clearCache()}>
+                  Clear cache
                 </button>
-                <button
-                  onClick={() => handleExecute("exact")}
-                  disabled={loadingExact}
-                  style={{
-                    padding: "9px 12px",
-                    fontFamily: "inherit",
-                    fontWeight: 600,
-                    fontSize: "13px",
-                    borderRadius: "8px",
-                    border: "none",
-                    background: loadingExact ? "#0d4a8f" : "#185FA5",
-                    color: "#fff",
-                    cursor: loadingExact ? "not-allowed" : "pointer",
-                    opacity: loadingExact ? 0.6 : 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "6px",
-                  }}
-                >
-                  {loadingExact ? (
-                    <>
-                      <Spinner size={12} />
-                      Running…
-                    </>
-                  ) : (
-                    "Run Query"
-                  )}
-                </button>
-              </div>
-              {renderResult(
-                resultExact,
-                errorExact,
-                csvMode ? "duckdb" : sourceExact,
-                loadingExact,
-                progressExact,
-              )}
-              {planExact && (
-                <div style={{ marginTop: "8px" }}>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      color: "#666",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    Plan tree
-                  </div>
-                  <pre
-                    style={{
-                      background: "#0d0d0d",
-                      padding: "10px",
-                      borderRadius: "6px",
-                      fontSize: "11px",
-                      overflowX: "auto",
-                      maxHeight: "180px",
-                    }}
-                  >
-                    {JSON.stringify(planExact, null, 2)}
-                  </pre>
-                  <div
-                    style={{
-                      height: "400px",
-                      marginTop: "10px",
-                      border: "0.5px solid #2a2a2a",
-                      borderRadius: "8px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <PlanGraph plan={planExact} />
-                  </div>
-                </div>
-              )}
+                {cacheNote && <> · {cacheNote}</>}
+              </span>
             </div>
           </div>
 
-          {/* APPROX PANEL */}
-          <div
-            style={{
-              background: "#141414",
-              border: "0.5px solid rgba(255,255,255,0.08)",
-              borderRadius: "12px",
-              overflow: "hidden",
-              boxShadow: "0 20px 45px rgba(0,0,0,0.18)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                padding: "12px 16px",
-                borderBottom: "0.5px solid rgba(255,255,255,0.06)",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  letterSpacing: "0.8px",
-                  textTransform: "uppercase",
-                  padding: "3px 9px",
-                  borderRadius: "4px",
-                  background: "rgba(186,117,23,0.18)",
-                  color: "#f5b84a",
-                }}
+          <div className="toolbar">
+            <span className="hint">
+              <kbd>Ctrl</kbd> <kbd>Enter</kbd> runs both
+            </span>
+            <div className="actions">
+              <button
+                className="btn btn-auto"
+                onClick={() => void runAuto()}
+                disabled={disabled || !query.trim()}
+                title="The ML cost model predicts both times and runs only the faster way"
               >
-                Approx
-              </span>
-              <span style={{ fontSize: "14px", fontWeight: 600 }}>
-                Approx Mode
-              </span>
-              <span
-                style={{ fontSize: "12px", color: "#444", marginLeft: "auto" }}
-              >
-                Estimated results
-              </span>
-            </div>
-            <div
-              style={{
-                padding: "16px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-              }}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
-                <span
-                  style={{ fontSize: "12px", color: "#666", minWidth: "52px" }}
-                >
-                  Source
-                </span>
-                <select
-                  value={sourceApprox}
-                  onChange={(e) => setSourceApprox(e.target.value as any)}
-                  disabled={csvMode}
-                  style={{
-                    fontFamily: "inherit",
-                    fontSize: "13px",
-                    padding: "5px 10px",
-                    borderRadius: "6px",
-                    border: "0.5px solid rgba(255,255,255,0.12)",
-                    background: "#1e1e1e",
-                    color: "#ccc",
-                    cursor: csvMode ? "not-allowed" : "pointer",
-                    opacity: csvMode ? 0.5 : 1,
-                  }}
-                >
-                  <option value="duckdb">duckdb</option>
-                  <option value="postgres">postgres</option>
-                  <option value="mysql">mysql</option>
-                </select>
-                {csvMode && (
-                  <span style={{ fontSize: "11px", color: "#555" }}>
-                    locked to duckdb
-                  </span>
-                )}
-              </div>
-              <textarea
-                value={queryApprox}
-                onChange={(e) => setQueryApprox(e.target.value)}
-                placeholder="SELECT approx_count_distinct(id) FROM data;"
-                style={{
-                  width: "100%",
-                  minHeight: "130px",
-                  padding: "10px 12px",
-                  background: "#1a1a1a",
-                  border: "0.5px solid rgba(255,255,255,0.08)",
-                  borderRadius: "8px",
-                  color: "#e0ddd8",
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "12.5px",
-                  lineHeight: 1.65,
-                  resize: "vertical",
-                  outline: "none",
-                }}
-              />
-              {renderAccuracyControl()}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "8px",
-                }}
-              >
-                <button
-                  onClick={() => handleAnalyze("approx")}
-                  disabled={loadingApprox}
-                  style={{
-                    padding: "9px 12px",
-                    fontFamily: "inherit",
-                    fontWeight: 600,
-                    fontSize: "13px",
-                    borderRadius: "8px",
-                    border: "0.5px solid rgba(186,117,23,0.3)",
-                    background: loadingApprox
-                      ? "rgba(186,117,23,0.1)"
-                      : "rgba(186,117,23,0.15)",
-                    color: "#f5b84a",
-                    cursor: loadingApprox ? "not-allowed" : "pointer",
-                    opacity: loadingApprox ? 0.6 : 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "6px",
-                  }}
-                >
-                  {loadingApprox ? (
-                    <>
-                      <Spinner size={12} />
-                      Analyzing…
-                    </>
-                  ) : (
-                    "Analyze Query"
-                  )}
-                </button>
-                <button
-                  onClick={() => handleExecute("approx")}
-                  disabled={loadingApprox}
-                  style={{
-                    padding: "9px 12px",
-                    fontFamily: "inherit",
-                    fontWeight: 600,
-                    fontSize: "13px",
-                    borderRadius: "8px",
-                    border: "none",
-                    background: loadingApprox ? "#7d5c1a" : "#BA7517",
-                    color: "#fff",
-                    cursor: loadingApprox ? "not-allowed" : "pointer",
-                    opacity: loadingApprox ? 0.6 : 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "6px",
-                  }}
-                >
-                  {loadingApprox ? (
-                    <>
-                      <Spinner size={12} />
-                      Running…
-                    </>
-                  ) : (
-                    "Run Query"
-                  )}
-                </button>
-              </div>
-              {renderResult(
-                resultApprox,
-                errorApprox,
-                csvMode ? "duckdb" : sourceApprox,
-                loadingApprox,
-                progressApprox,
-              )}
-              {planApprox && (
-                <div style={{ marginTop: "8px" }}>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      color: "#666",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    Plan tree
-                  </div>
-                  <pre
-                    style={{
-                      background: "#0d0d0d",
-                      padding: "10px",
-                      borderRadius: "6px",
-                      fontSize: "11px",
-                      overflowX: "auto",
-                      maxHeight: "180px",
-                    }}
-                  >
-                    {JSON.stringify(planApprox, null, 2)}
-                  </pre>
-                  <div
-                    style={{
-                      height: "400px",
-                      marginTop: "10px",
-                      border: "0.5px solid #2a2a2a",
-                      borderRadius: "8px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <PlanGraph plan={planApprox} />
-                  </div>
-                </div>
-              )}
+                Auto (ML decides)
+              </button>
+              <button className="btn" onClick={() => void runOne("exact")} disabled={disabled || !query.trim()}>
+                <i className="swatch exact" /> Normal (exact)
+              </button>
+              <button className="btn" onClick={() => void runOne("approx")} disabled={disabled || !query.trim()}>
+                <i className="swatch estimate" /> Estimate
+              </button>
+              <button className="btn btn-primary" onClick={() => void runBoth()} disabled={disabled || !query.trim()}>
+                Run both and compare
+              </button>
             </div>
           </div>
-        </div>
 
-        {/* Comparison Section - TODO: Fix JSX structure */}
-        {false && <div>Placeholder</div>}
+          {(showBest || (nothingYet && !query.trim())) && (
+            <BestQueries
+              backend={BACKEND}
+              refreshKey={refreshKey}
+              onUseQuery={(sql) => {
+                applyQuery(sql);
+                setShowBest(false);
+              }}
+              onSourcesChanged={() => sourcesChanged()}
+            />
+          )}
+
+          {nothingYet && query.trim() ? (
+            <p className="not-run">
+              Not run yet. <strong>Run both and compare</strong> shows the exact answer, the estimate, the error of each
+              value and how the cost model's prediction held up.
+            </p>
+          ) : nothingYet ? (
+            <section className="empty">
+              <h2>Ask one question of every database you have.</h2>
+              <p>
+                Argus runs your SQL two ways: exactly, and as a fast estimate from a sample, and shows how much time
+                the estimate saved and how close it came.
+              </p>
+              <ol className="steps">
+                <li>
+                  <strong>Add a source</strong>
+                  Sample data is one click; your own PostgreSQL, MySQL or MongoDB takes a connection string.
+                </li>
+                <li>
+                  <strong>Pick a table</strong>
+                  Its columns and a few starting queries appear under the list.
+                </li>
+                <li>
+                  <strong>Run both and compare</strong>
+                  Exact answer, estimate with its error range, and the speedup, side by side.
+                </li>
+              </ol>
+            </section>
+          ) : (
+            <ResultsView
+              backend={BACKEND}
+              query={query}
+              engine={engine}
+              exact={exact}
+              estimate={estimate}
+              exactError={exactError}
+              estimateError={estimateError}
+              comparison={comparison}
+              runningMessage={runningMessage}
+              normalRunning={normalRunning}
+              advice={runAdvice}
+              auto={autoChosen !== null}
+              onLoadQuery={(sql) => setQuery(sql)}
+            />
+          )}
+        </main>
       </div>
-    </>
+
+      {adding && <AddSourceDialog backend={BACKEND} onClose={closeDialog} onAdded={sourcesChanged} />}
+    </div>
   );
 }
-
-export default App;

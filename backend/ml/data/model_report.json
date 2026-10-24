@@ -1,0 +1,3409 @@
+{
+ "trained_at": 1792777699.049449,
+ "raw_runs": 886,
+ "queries": 320,
+ "paired": 317,
+ "datasets": [
+  "clustered-1000000",
+  "cross-big",
+  "cross-small",
+  "csv-raw",
+  "lineitem",
+  "orders-csv",
+  "parquet-http",
+  "rfam-family-copy",
+  "rfam-full_region",
+  "rfam-full_region-filtered",
+  "rfam-join",
+  "rfam-join-clan",
+  "rfam-join-clan-copy",
+  "rfam-join-copy",
+  "rfam.family",
+  "rfam.full_region",
+  "rnacentral-cpat",
+  "skewed-1000000",
+  "synthetic-20000",
+  "synthetic-200000",
+  "synthetic-2000000",
+  "synthetic-60000",
+  "synthetic-600000",
+  "synthetic-6000000",
+  "taxi-parquet",
+  "tpch-0.3"
+ ],
+ "threshold": 1.5,
+ "chosen": "+ pilot sample, estimate model only",
+ "formula_factor": 6.817257646387226,
+ "unseen": {
+  "n": 317,
+  "exact_factor": 1.3420733386184616,
+  "estimate_factor": 1.2333436440711256,
+  "speedup_factor": 1.406481956942753,
+  "speedup_within_2x": 0.7886435331230284,
+  "policies": {
+   "always exact": {
+    "agreement": 0.9053627760252366,
+    "total_seconds": 286.07841444015503,
+    "slowdown": 1.7147222941354285,
+    "estimates": 0
+   },
+   "always estimate": {
+    "agreement": 0.0946372239747634,
+    "total_seconds": 28.216060757637024,
+    "slowdown": 3.004954587537244,
+    "estimates": 317
+   },
+   "rule": {
+    "agreement": 0.9810725552050473,
+    "total_seconds": 10.181954026222229,
+    "slowdown": 1.0098161646120816,
+    "estimates": 26
+   },
+   "model": {
+    "agreement": 0.9747634069400631,
+    "total_seconds": 10.185370326042175,
+    "slowdown": 1.0134911371707518,
+    "estimates": 28
+   },
+   "oracle": {
+    "agreement": 1.0,
+    "total_seconds": 11.349516034126282,
+    "slowdown": 1.0,
+    "estimates": 30
+   }
+  },
+  "by_setting": {
+   "Local": {
+    "n": 291,
+    "exact_factor": 1.3132403472692955,
+    "estimate_factor": 1.2231612611966791,
+    "speedup_factor": 1.3812260895136665,
+    "speedup_within_2x": 0.8144329896907216,
+    "policies": {
+     "always exact": {
+      "agreement": 0.9828178694158075,
+      "total_seconds": 3.7327264547348022,
+      "slowdown": 1.0116393280412566,
+      "estimates": 0
+     },
+     "always estimate": {
+      "agreement": 0.01718213058419244,
+      "total_seconds": 21.766833186149597,
+      "slowdown": 3.3184530854897196,
+      "estimates": 291
+     },
+     "rule": {
+      "agreement": 0.9828178694158075,
+      "total_seconds": 3.7327264547348022,
+      "slowdown": 1.0116393280412566,
+      "estimates": 0
+     },
+     "model": {
+      "agreement": 0.9759450171821306,
+      "total_seconds": 3.7361427545547485,
+      "slowdown": 1.0156505277309156,
+      "estimates": 2
+     },
+     "oracle": {
+      "agreement": 1.0,
+      "total_seconds": 3.7105685472488403,
+      "slowdown": 1.0,
+      "estimates": 5
+     }
+    }
+   },
+   "Remote": {
+    "n": 26,
+    "exact_factor": 2.358883712338513,
+    "estimate_factor": 1.3774764533068584,
+    "speedup_factor": 2.041796295910695,
+    "speedup_within_2x": 0.5,
+    "policies": {
+     "always exact": {
+      "agreement": 0.038461538461538464,
+      "total_seconds": 282.3456879854202,
+      "slowdown": 629.6708240908924,
+      "estimates": 0
+     },
+     "always estimate": {
+      "agreement": 0.9615384615384616,
+      "total_seconds": 6.449227571487427,
+      "slowdown": 0.9896335737452555,
+      "estimates": 26
+     },
+     "rule": {
+      "agreement": 0.9615384615384616,
+      "total_seconds": 6.449227571487427,
+      "slowdown": 0.9896335737452555,
+      "estimates": 26
+     },
+     "model": {
+      "agreement": 0.9615384615384616,
+      "total_seconds": 6.449227571487427,
+      "slowdown": 0.9896335737452555,
+      "estimates": 26
+     },
+     "oracle": {
+      "agreement": 1.0,
+      "total_seconds": 7.638947486877441,
+      "slowdown": 1.0,
+      "estimates": 25
+     }
+    }
+   }
+  }
+ },
+ "seen": {
+  "n": 317,
+  "exact_factor": 1.1886148376939791,
+  "estimate_factor": 1.1359925051251212,
+  "speedup_factor": 1.2643483932680657,
+  "speedup_within_2x": 0.9053627760252366,
+  "policies": {
+   "always exact": {
+    "agreement": 0.9053627760252366,
+    "total_seconds": 286.07841444015503,
+    "slowdown": 1.7147222941354285,
+    "estimates": 0
+   },
+   "always estimate": {
+    "agreement": 0.0946372239747634,
+    "total_seconds": 28.216060757637024,
+    "slowdown": 3.004954587537244,
+    "estimates": 317
+   },
+   "rule": {
+    "agreement": 0.9810725552050473,
+    "total_seconds": 10.181954026222229,
+    "slowdown": 1.0098161646120816,
+    "estimates": 26
+   },
+   "model": {
+    "agreement": 0.9842271293375394,
+    "total_seconds": 10.162193179130554,
+    "slowdown": 1.0010364098235829,
+    "estimates": 31
+   },
+   "oracle": {
+    "agreement": 1.0,
+    "total_seconds": 11.349516034126282,
+    "slowdown": 1.0,
+    "estimates": 30
+   }
+  }
+ },
+ "ablation": {
+  "size and shape (first model)": {
+   "n": 317,
+   "exact_factor": 1.3420733386184616,
+   "estimate_factor": 1.3565151280444272,
+   "speedup_factor": 1.4784828947484414,
+   "speedup_within_2x": 0.7318611987381703,
+   "policies": {
+    "always exact": {
+     "agreement": 0.9053627760252366,
+     "total_seconds": 286.07841444015503,
+     "slowdown": 1.7147222941354285,
+     "estimates": 0
+    },
+    "always estimate": {
+     "agreement": 0.0946372239747634,
+     "total_seconds": 28.216060757637024,
+     "slowdown": 3.004954587537244,
+     "estimates": 317
+    },
+    "rule": {
+     "agreement": 0.9810725552050473,
+     "total_seconds": 10.181954026222229,
+     "slowdown": 1.0098161646120816,
+     "estimates": 26
+    },
+    "model": {
+     "agreement": 0.9810725552050473,
+     "total_seconds": 10.181954026222229,
+     "slowdown": 1.0098161646120816,
+     "estimates": 26
+    },
+    "oracle": {
+     "agreement": 1.0,
+     "total_seconds": 11.349516034126282,
+     "slowdown": 1.0,
+     "estimates": 30
+    }
+   },
+   "by_setting": {
+    "Local": {
+     "n": 291,
+     "exact_factor": 1.3132403472692955,
+     "estimate_factor": 1.346048479315612,
+     "speedup_factor": 1.4737894662576356,
+     "speedup_within_2x": 0.7491408934707904,
+     "policies": {
+      "always exact": {
+       "agreement": 0.9828178694158075,
+       "total_seconds": 3.7327264547348022,
+       "slowdown": 1.0116393280412566,
+       "estimates": 0
+      },
+      "always estimate": {
+       "agreement": 0.01718213058419244,
+       "total_seconds": 21.766833186149597,
+       "slowdown": 3.3184530854897196,
+       "estimates": 291
+      },
+      "rule": {
+       "agreement": 0.9828178694158075,
+       "total_seconds": 3.7327264547348022,
+       "slowdown": 1.0116393280412566,
+       "estimates": 0
+      },
+      "model": {
+       "agreement": 0.9828178694158075,
+       "total_seconds": 3.7327264547348022,
+       "slowdown": 1.0116393280412566,
+       "estimates": 0
+      },
+      "oracle": {
+       "agreement": 1.0,
+       "total_seconds": 3.7105685472488403,
+       "slowdown": 1.0,
+       "estimates": 5
+      }
+     }
+    },
+    "Remote": {
+     "n": 26,
+     "exact_factor": 2.358883712338513,
+     "estimate_factor": 1.719428200969266,
+     "speedup_factor": 1.669378020354421,
+     "speedup_within_2x": 0.5384615384615384,
+     "policies": {
+      "always exact": {
+       "agreement": 0.038461538461538464,
+       "total_seconds": 282.3456879854202,
+       "slowdown": 629.6708240908924,
+       "estimates": 0
+      },
+      "always estimate": {
+       "agreement": 0.9615384615384616,
+       "total_seconds": 6.449227571487427,
+       "slowdown": 0.9896335737452555,
+       "estimates": 26
+      },
+      "rule": {
+       "agreement": 0.9615384615384616,
+       "total_seconds": 6.449227571487427,
+       "slowdown": 0.9896335737452555,
+       "estimates": 26
+      },
+      "model": {
+       "agreement": 0.9615384615384616,
+       "total_seconds": 6.449227571487427,
+       "slowdown": 0.9896335737452555,
+       "estimates": 26
+      },
+      "oracle": {
+       "agreement": 1.0,
+       "total_seconds": 7.638947486877441,
+       "slowdown": 1.0,
+       "estimates": 25
+      }
+     }
+    }
+   }
+  },
+  "+ pilot sample, both models": {
+   "n": 317,
+   "exact_factor": 1.414082114330156,
+   "estimate_factor": 1.2333436440711256,
+   "speedup_factor": 1.4086418701748136,
+   "speedup_within_2x": 0.7413249211356467,
+   "policies": {
+    "always exact": {
+     "agreement": 0.9053627760252366,
+     "total_seconds": 286.07841444015503,
+     "slowdown": 1.7147222941354285,
+     "estimates": 0
+    },
+    "always estimate": {
+     "agreement": 0.0946372239747634,
+     "total_seconds": 28.216060757637024,
+     "slowdown": 3.004954587537244,
+     "estimates": 317
+    },
+    "rule": {
+     "agreement": 0.9810725552050473,
+     "total_seconds": 10.181954026222229,
+     "slowdown": 1.0098161646120816,
+     "estimates": 26
+    },
+    "model": {
+     "agreement": 0.9779179810725552,
+     "total_seconds": 10.18311631679535,
+     "slowdown": 1.0117191068296263,
+     "estimates": 27
+    },
+    "oracle": {
+     "agreement": 1.0,
+     "total_seconds": 11.349516034126282,
+     "slowdown": 1.0,
+     "estimates": 30
+    }
+   },
+   "by_setting": {
+    "Local": {
+     "n": 291,
+     "exact_factor": 1.371381203050511,
+     "estimate_factor": 1.2231612611966791,
+     "speedup_factor": 1.3853631829132609,
+     "speedup_within_2x": 0.7731958762886598,
+     "policies": {
+      "always exact": {
+       "agreement": 0.9828178694158075,
+       "total_seconds": 3.7327264547348022,
+       "slowdown": 1.0116393280412566,
+       "estimates": 0
+      },
+      "always estimate": {
+       "agreement": 0.01718213058419244,
+       "total_seconds": 21.766833186149597,
+       "slowdown": 3.3184530854897196,
+       "estimates": 291
+      },
+      "rule": {
+       "agreement": 0.9828178694158075,
+       "total_seconds": 3.7327264547348022,
+       "slowdown": 1.0116393280412566,
+       "estimates": 0
+      },
+      "model": {
+       "agreement": 0.979381443298969,
+       "total_seconds": 3.7338887453079224,
+       "slowdown": 1.0137162099297883,
+       "estimates": 1
+      },
+      "oracle": {
+       "agreement": 1.0,
+       "total_seconds": 3.7105685472488403,
+       "slowdown": 1.0,
+       "estimates": 5
+      }
+     }
+    },
+    "Remote": {
+     "n": 26,
+     "exact_factor": 2.3555268325985352,
+     "estimate_factor": 1.3774764533068584,
+     "speedup_factor": 2.5807929692471205,
+     "speedup_within_2x": 0.38461538461538464,
+     "policies": {
+      "always exact": {
+       "agreement": 0.038461538461538464,
+       "total_seconds": 282.3456879854202,
+       "slowdown": 629.6708240908924,
+       "estimates": 0
+      },
+      "always estimate": {
+       "agreement": 0.9615384615384616,
+       "total_seconds": 6.449227571487427,
+       "slowdown": 0.9896335737452555,
+       "estimates": 26
+      },
+      "rule": {
+       "agreement": 0.9615384615384616,
+       "total_seconds": 6.449227571487427,
+       "slowdown": 0.9896335737452555,
+       "estimates": 26
+      },
+      "model": {
+       "agreement": 0.9615384615384616,
+       "total_seconds": 6.449227571487427,
+       "slowdown": 0.9896335737452555,
+       "estimates": 26
+      },
+      "oracle": {
+       "agreement": 1.0,
+       "total_seconds": 7.638947486877441,
+       "slowdown": 1.0,
+       "estimates": 25
+      }
+     }
+    }
+   }
+  },
+  "+ pilot sample, estimate model only": {
+   "n": 317,
+   "exact_factor": 1.3420733386184616,
+   "estimate_factor": 1.2333436440711256,
+   "speedup_factor": 1.406481956942753,
+   "speedup_within_2x": 0.7886435331230284,
+   "policies": {
+    "always exact": {
+     "agreement": 0.9053627760252366,
+     "total_seconds": 286.07841444015503,
+     "slowdown": 1.7147222941354285,
+     "estimates": 0
+    },
+    "always estimate": {
+     "agreement": 0.0946372239747634,
+     "total_seconds": 28.216060757637024,
+     "slowdown": 3.004954587537244,
+     "estimates": 317
+    },
+    "rule": {
+     "agreement": 0.9810725552050473,
+     "total_seconds": 10.181954026222229,
+     "slowdown": 1.0098161646120816,
+     "estimates": 26
+    },
+    "model": {
+     "agreement": 0.9747634069400631,
+     "total_seconds": 10.185370326042175,
+     "slowdown": 1.0134911371707518,
+     "estimates": 28
+    },
+    "oracle": {
+     "agreement": 1.0,
+     "total_seconds": 11.349516034126282,
+     "slowdown": 1.0,
+     "estimates": 30
+    }
+   },
+   "by_setting": {
+    "Local": {
+     "n": 291,
+     "exact_factor": 1.3132403472692955,
+     "estimate_factor": 1.2231612611966791,
+     "speedup_factor": 1.3812260895136665,
+     "speedup_within_2x": 0.8144329896907216,
+     "policies": {
+      "always exact": {
+       "agreement": 0.9828178694158075,
+       "total_seconds": 3.7327264547348022,
+       "slowdown": 1.0116393280412566,
+       "estimates": 0
+      },
+      "always estimate": {
+       "agreement": 0.01718213058419244,
+       "total_seconds": 21.766833186149597,
+       "slowdown": 3.3184530854897196,
+       "estimates": 291
+      },
+      "rule": {
+       "agreement": 0.9828178694158075,
+       "total_seconds": 3.7327264547348022,
+       "slowdown": 1.0116393280412566,
+       "estimates": 0
+      },
+      "model": {
+       "agreement": 0.9759450171821306,
+       "total_seconds": 3.7361427545547485,
+       "slowdown": 1.0156505277309156,
+       "estimates": 2
+      },
+      "oracle": {
+       "agreement": 1.0,
+       "total_seconds": 3.7105685472488403,
+       "slowdown": 1.0,
+       "estimates": 5
+      }
+     }
+    },
+    "Remote": {
+     "n": 26,
+     "exact_factor": 2.358883712338513,
+     "estimate_factor": 1.3774764533068584,
+     "speedup_factor": 2.041796295910695,
+     "speedup_within_2x": 0.5,
+     "policies": {
+      "always exact": {
+       "agreement": 0.038461538461538464,
+       "total_seconds": 282.3456879854202,
+       "slowdown": 629.6708240908924,
+       "estimates": 0
+      },
+      "always estimate": {
+       "agreement": 0.9615384615384616,
+       "total_seconds": 6.449227571487427,
+       "slowdown": 0.9896335737452555,
+       "estimates": 26
+      },
+      "rule": {
+       "agreement": 0.9615384615384616,
+       "total_seconds": 6.449227571487427,
+       "slowdown": 0.9896335737452555,
+       "estimates": 26
+      },
+      "model": {
+       "agreement": 0.9615384615384616,
+       "total_seconds": 6.449227571487427,
+       "slowdown": 0.9896335737452555,
+       "estimates": 26
+      },
+      "oracle": {
+       "agreement": 1.0,
+       "total_seconds": 7.638947486877441,
+       "slowdown": 1.0,
+       "estimates": 25
+      }
+     }
+    }
+   }
+  }
+ },
+ "held_out": [
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT COUNT(*) FROM f_clustered",
+   "setting": "Local",
+   "exact": 0.0003819465637207031,
+   "approx": 0.0032088756561279297,
+   "predicted_exact": 0.00036587657841674197,
+   "predicted_approx": 0.0034753402916326837
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT COUNT(*) FROM f_clustered",
+   "setting": "Local",
+   "exact": 0.00033092498779296875,
+   "approx": 0.0032958984375,
+   "predicted_exact": 0.0003738528853534377,
+   "predicted_approx": 0.0028705050849083314
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT COUNT(*) FROM f_clustered",
+   "setting": "Local",
+   "exact": 0.0003750324249267578,
+   "approx": 0.002984762191772461,
+   "predicted_exact": 0.0003514471631257939,
+   "predicted_approx": 0.0027686756107562567
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_clustered",
+   "setting": "Local",
+   "exact": 0.0012350082397460938,
+   "approx": 0.003958940505981445,
+   "predicted_exact": 0.0013436423052989577,
+   "predicted_approx": 0.003904335159224787
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_clustered",
+   "setting": "Local",
+   "exact": 0.0012328624725341797,
+   "approx": 0.005388021469116211,
+   "predicted_exact": 0.0013518970477379632,
+   "predicted_approx": 0.004739652475073053
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_clustered",
+   "setting": "Local",
+   "exact": 0.0013010501861572266,
+   "approx": 0.005059719085693359,
+   "predicted_exact": 0.0013185751394054663,
+   "predicted_approx": 0.005406652409833336
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_clustered GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0018641948699951172,
+   "approx": 0.005036830902099609,
+   "predicted_exact": 0.0022753307984932363,
+   "predicted_approx": 0.005432105787424009
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_clustered GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.001928091049194336,
+   "approx": 0.0049381256103515625,
+   "predicted_exact": 0.0023193539941950706,
+   "predicted_approx": 0.006085786162396081
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_clustered GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0017170906066894531,
+   "approx": 0.005460023880004883,
+   "predicted_exact": 0.0022578797855776892,
+   "predicted_approx": 0.004756873364082207
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g100, SUM(amount) FROM f_clustered GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0018301010131835938,
+   "approx": 0.005072116851806641,
+   "predicted_exact": 0.0021216754011697766,
+   "predicted_approx": 0.00619718496712505
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g100, SUM(amount) FROM f_clustered GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.002001047134399414,
+   "approx": 0.004630088806152344,
+   "predicted_exact": 0.0021886980915728923,
+   "predicted_approx": 0.004210859233600583
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g100, SUM(amount) FROM f_clustered GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0020830631256103516,
+   "approx": 0.004227876663208008,
+   "predicted_exact": 0.0021479949314750354,
+   "predicted_approx": 0.003961334083942334
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_clustered GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.003568887710571289,
+   "approx": 0.04269528388977051,
+   "predicted_exact": 0.0021216754011697766,
+   "predicted_approx": 0.040205246003229576
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_clustered GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0036988258361816406,
+   "approx": 0.043132781982421875,
+   "predicted_exact": 0.0021886980915728923,
+   "predicted_approx": 0.03932600691864568
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_clustered GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.004168272018432617,
+   "approx": 0.04017376899719238,
+   "predicted_exact": 0.0021479949314750354,
+   "predicted_approx": 0.038686088910638794
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT COUNT(*) FROM f_clustered WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.00168609619140625,
+   "approx": 0.0034990310668945312,
+   "predicted_exact": 0.0012743695275638858,
+   "predicted_approx": 0.002745268596926299
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT COUNT(*) FROM f_clustered WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0016338825225830078,
+   "approx": 0.0028197765350341797,
+   "predicted_exact": 0.001290050462691512,
+   "predicted_approx": 0.002655990191989559
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT COUNT(*) FROM f_clustered WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.001683950424194336,
+   "approx": 0.0026807785034179688,
+   "predicted_exact": 0.001238084795281915,
+   "predicted_approx": 0.0028239718770484696
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT AVG(amount) FROM f_clustered WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.001271963119506836,
+   "approx": 0.0028901100158691406,
+   "predicted_exact": 0.0012743695275638858,
+   "predicted_approx": 0.002417882891947148
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT AVG(amount) FROM f_clustered WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0012359619140625,
+   "approx": 0.002850770950317383,
+   "predicted_exact": 0.001290050462691512,
+   "predicted_approx": 0.002236601215613692
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT AVG(amount) FROM f_clustered WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0011718273162841797,
+   "approx": 0.0021839141845703125,
+   "predicted_exact": 0.001238084795281915,
+   "predicted_approx": 0.002193843723532503
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g100, COUNT(*) FROM f_clustered GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0014891624450683594,
+   "approx": 0.004223346710205078,
+   "predicted_exact": 0.0012446817896943217,
+   "predicted_approx": 0.004029488497982598
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g100, COUNT(*) FROM f_clustered GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.001361846923828125,
+   "approx": 0.004232883453369141,
+   "predicted_exact": 0.0012460720868571905,
+   "predicted_approx": 0.0038639147181794738
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT g100, COUNT(*) FROM f_clustered GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0014081001281738281,
+   "approx": 0.003993034362792969,
+   "predicted_exact": 0.0012107273580732906,
+   "predicted_approx": 0.00347008381531194
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_clustered f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.003637075424194336,
+   "approx": 0.007105827331542969,
+   "predicted_exact": 0.002790029811670072,
+   "predicted_approx": 0.007156804619208667
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_clustered f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0032999515533447266,
+   "approx": 0.006560087203979492,
+   "predicted_exact": 0.0028198228630284595,
+   "predicted_approx": 0.006192920077850057
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_clustered f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0033180713653564453,
+   "approx": 0.006409883499145508,
+   "predicted_exact": 0.002790183510943559,
+   "predicted_approx": 0.006856943854500981
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_clustered f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0032520294189453125,
+   "approx": 0.00864410400390625,
+   "predicted_exact": 0.0034116326942093067,
+   "predicted_approx": 0.004442397017177139
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_clustered f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0031900405883789062,
+   "approx": 0.009461164474487305,
+   "predicted_exact": 0.0034417070800510834,
+   "predicted_approx": 0.0037678762678451847
+  },
+  {
+   "dataset": "clustered-1000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_clustered f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.00333404541015625,
+   "approx": 0.009360790252685547,
+   "predicted_exact": 0.0035070639716882385,
+   "predicted_approx": 0.004663391158539864
+  },
+  {
+   "dataset": "cross-big",
+   "query": "SELECT m.rna_type, COUNT(*) AS hits FROM rfam.full_region r JOIN rnacentral.rfam_models m ON m.rfam_model_id = r.rfam_acc GROUP BY m.rna_type ORDER BY hits DESC LIMIT 10",
+   "setting": "Remote",
+   "exact": 54.31342697143555,
+   "approx": 0.019828081130981445,
+   "predicted_exact": 11.10573600744088,
+   "predicted_approx": 0.011856692555108383
+  },
+  {
+   "dataset": "cross-small",
+   "query": "SELECT f.type, COUNT(*), SUM(m.full_count) FROM rfam.family f JOIN rnacentral.rfam_models m ON m.rfam_model_id = f.rfam_acc GROUP BY f.type ORDER BY 2 DESC LIMIT 10",
+   "setting": "Remote",
+   "exact": 8.618566751480103,
+   "approx": 0.011181116104125977,
+   "predicted_exact": 0.7413924966015767,
+   "predicted_approx": 0.01784020885331163
+  },
+  {
+   "dataset": "csv-raw",
+   "query": "SELECT customer_region, COUNT(*), AVG(total_amount) FROM orders_csv GROUP BY customer_region",
+   "setting": "Local",
+   "exact": 0.15045011043548584,
+   "approx": 1.71955406665802,
+   "predicted_exact": 0.11125896514374885,
+   "predicted_approx": 1.1520884223386896
+  },
+  {
+   "dataset": "csv-raw",
+   "query": "SELECT customer_region, COUNT(*), AVG(total_amount) FROM orders_csv GROUP BY customer_region",
+   "setting": "Local",
+   "exact": 0.14568936824798584,
+   "approx": 1.7279480695724487,
+   "predicted_exact": 0.10521565246686723,
+   "predicted_approx": 1.2488709810724727
+  },
+  {
+   "dataset": "csv-raw",
+   "query": "SELECT AVG(order_quantity) FROM orders_csv WHERE is_returned = 1",
+   "setting": "Local",
+   "exact": 0.13365328311920166,
+   "approx": 1.7769194841384888,
+   "predicted_exact": 0.07007138639118164,
+   "predicted_approx": 1.0649400889854308
+  },
+  {
+   "dataset": "csv-raw",
+   "query": "SELECT AVG(order_quantity) FROM orders_csv WHERE is_returned = 1",
+   "setting": "Local",
+   "exact": 0.1473555564880371,
+   "approx": 1.270456075668335,
+   "predicted_exact": 0.06741432083042019,
+   "predicted_approx": 1.0868687179376166
+  },
+  {
+   "dataset": "csv-raw",
+   "query": "SELECT product_category, SUM(total_amount) FROM orders_csv GROUP BY product_category",
+   "setting": "Local",
+   "exact": 0.1452234983444214,
+   "approx": 1.6993194818496704,
+   "predicted_exact": 0.11976777511140048,
+   "predicted_approx": 1.3043171979896415
+  },
+  {
+   "dataset": "csv-raw",
+   "query": "SELECT product_category, SUM(total_amount) FROM orders_csv GROUP BY product_category",
+   "setting": "Local",
+   "exact": 0.14491450786590576,
+   "approx": 1.703436017036438,
+   "predicted_exact": 0.11095445938840169,
+   "predicted_approx": 1.0699465062223317
+  },
+  {
+   "dataset": "csv-raw",
+   "query": "SELECT payment_method, COUNT(*) FROM orders_csv WHERE customer_age > 40 GROUP BY payment_method",
+   "setting": "Local",
+   "exact": 0.14127302169799805,
+   "approx": 1.0631285905838013,
+   "predicted_exact": 0.16612489149484735,
+   "predicted_approx": 0.8453090445573704
+  },
+  {
+   "dataset": "csv-raw",
+   "query": "SELECT payment_method, COUNT(*) FROM orders_csv WHERE customer_age > 40 GROUP BY payment_method",
+   "setting": "Local",
+   "exact": 0.14283812046051025,
+   "approx": 1.0584979057312012,
+   "predicted_exact": 0.1562468366939661,
+   "predicted_approx": 0.8979737169110856
+  },
+  {
+   "dataset": "lineitem",
+   "query": "SELECT COUNT(*), AVG(l_quantity) FROM lineitem WHERE l_extendedprice > 71756.275",
+   "setting": "Local",
+   "exact": 0.003938078880310059,
+   "approx": 0.004081606864929199,
+   "predicted_exact": 0.0015552495106540755,
+   "predicted_approx": 0.004696713371531836
+  },
+  {
+   "dataset": "lineitem",
+   "query": "SELECT COUNT(*), AVG(l_quantity) FROM lineitem WHERE l_extendedprice > 71756.275",
+   "setting": "Local",
+   "exact": 0.004309892654418945,
+   "approx": 0.004861354827880859,
+   "predicted_exact": 0.0015617905261658118,
+   "predicted_approx": 0.0056592395332813695
+  },
+  {
+   "dataset": "lineitem",
+   "query": "SELECT COUNT(*), AVG(l_quantity) FROM lineitem WHERE l_extendedprice > 71756.275",
+   "setting": "Local",
+   "exact": 0.003961086273193359,
+   "approx": 0.004480123519897461,
+   "predicted_exact": 0.001593218665957364,
+   "predicted_approx": 0.004755143463730861
+  },
+  {
+   "dataset": "lineitem",
+   "query": "SELECT l_shipmode, COUNT(*), AVG(l_extendedprice) FROM lineitem GROUP BY l_shipmode ORDER BY AVG(l_extendedprice) DESC",
+   "setting": "Local",
+   "exact": 0.006910085678100586,
+   "approx": 0.008768081665039062,
+   "predicted_exact": 0.0021367379061163067,
+   "predicted_approx": 0.006119194821952169
+  },
+  {
+   "dataset": "lineitem",
+   "query": "SELECT l_shipmode, COUNT(*) FROM lineitem GROUP BY l_shipmode ORDER BY COUNT(*) DESC",
+   "setting": "Local",
+   "exact": 0.006106138229370117,
+   "approx": 0.009166955947875977,
+   "predicted_exact": 0.0020572247969944187,
+   "predicted_approx": 0.009693469014115129
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT customer_region, COUNT(*), AVG(total_amount) FROM orders_csv GROUP BY customer_region",
+   "setting": "Local",
+   "exact": 0.008970975875854492,
+   "approx": 0.011487960815429688,
+   "predicted_exact": 0.003045518545545872,
+   "predicted_approx": 0.005522872401066438
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT customer_region, COUNT(*), AVG(total_amount) FROM orders_csv GROUP BY customer_region",
+   "setting": "Local",
+   "exact": 0.00881814956665039,
+   "approx": 0.01296687126159668,
+   "predicted_exact": 0.0030418967529385484,
+   "predicted_approx": 0.007227415912540891
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT customer_region, COUNT(*), AVG(total_amount) FROM orders_csv GROUP BY customer_region",
+   "setting": "Local",
+   "exact": 0.008431196212768555,
+   "approx": 0.008458852767944336,
+   "predicted_exact": 0.0030043443177068968,
+   "predicted_approx": 0.006431924791118211
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT AVG(order_quantity) FROM orders_csv WHERE is_returned = 1",
+   "setting": "Local",
+   "exact": 0.001096963882446289,
+   "approx": 0.0023419857025146484,
+   "predicted_exact": 0.0020051206537510064,
+   "predicted_approx": 0.00300494468698486
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT AVG(order_quantity) FROM orders_csv WHERE is_returned = 1",
+   "setting": "Local",
+   "exact": 0.0010597705841064453,
+   "approx": 0.003494739532470703,
+   "predicted_exact": 0.0020051898500976456,
+   "predicted_approx": 0.003335987841698578
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT AVG(order_quantity) FROM orders_csv WHERE is_returned = 1",
+   "setting": "Local",
+   "exact": 0.0010869503021240234,
+   "approx": 0.004230022430419922,
+   "predicted_exact": 0.001943093950638483,
+   "predicted_approx": 0.0036413371315483045
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT product_category, SUM(total_amount) FROM orders_csv GROUP BY product_category",
+   "setting": "Local",
+   "exact": 0.008157968521118164,
+   "approx": 0.006890058517456055,
+   "predicted_exact": 0.0030336602886941373,
+   "predicted_approx": 0.0043532318301209155
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT product_category, SUM(total_amount) FROM orders_csv GROUP BY product_category",
+   "setting": "Local",
+   "exact": 0.00814199447631836,
+   "approx": 0.007966995239257812,
+   "predicted_exact": 0.0030708893310756845,
+   "predicted_approx": 0.007375821037357168
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT product_category, SUM(total_amount) FROM orders_csv GROUP BY product_category",
+   "setting": "Local",
+   "exact": 0.007991790771484375,
+   "approx": 0.008077859878540039,
+   "predicted_exact": 0.003130395253298964,
+   "predicted_approx": 0.006675322334094615
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT payment_method, COUNT(*) FROM orders_csv WHERE customer_age > 40 GROUP BY payment_method",
+   "setting": "Local",
+   "exact": 0.0064067840576171875,
+   "approx": 0.0031442642211914062,
+   "predicted_exact": 0.0038036434153757973,
+   "predicted_approx": 0.003790422297988119
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT payment_method, COUNT(*) FROM orders_csv WHERE customer_age > 40 GROUP BY payment_method",
+   "setting": "Local",
+   "exact": 0.006725788116455078,
+   "approx": 0.008723258972167969,
+   "predicted_exact": 0.0038400297072919776,
+   "predicted_approx": 0.004528324897451684
+  },
+  {
+   "dataset": "orders-csv",
+   "query": "SELECT payment_method, COUNT(*) FROM orders_csv WHERE customer_age > 40 GROUP BY payment_method",
+   "setting": "Local",
+   "exact": 0.006644010543823242,
+   "approx": 0.006520986557006836,
+   "predicted_exact": 0.003896218262885213,
+   "predicted_approx": 0.004808221100145464
+  },
+  {
+   "dataset": "parquet-http",
+   "query": "SELECT payment_type, COUNT(*), AVG(fare_amount) FROM taxi_local GROUP BY payment_type",
+   "setting": "Local",
+   "exact": 0.22273552417755127,
+   "approx": 1.1077908277511597,
+   "predicted_exact": 0.14074161474515717,
+   "predicted_approx": 0.8616078632824248
+  },
+  {
+   "dataset": "parquet-http",
+   "query": "SELECT payment_type, COUNT(*), AVG(fare_amount) FROM taxi_local GROUP BY payment_type",
+   "setting": "Local",
+   "exact": 0.22846293449401855,
+   "approx": 0.9498500823974609,
+   "predicted_exact": 0.13485410452991212,
+   "predicted_approx": 0.8491157029734332
+  },
+  {
+   "dataset": "parquet-http",
+   "query": "SELECT AVG(tip_amount) FROM taxi_local WHERE trip_distance > 5",
+   "setting": "Local",
+   "exact": 0.1901475191116333,
+   "approx": 0.8209168910980225,
+   "predicted_exact": 0.11601355484427572,
+   "predicted_approx": 1.431670778788227
+  },
+  {
+   "dataset": "parquet-http",
+   "query": "SELECT AVG(tip_amount) FROM taxi_local WHERE trip_distance > 5",
+   "setting": "Local",
+   "exact": 0.2638446092605591,
+   "approx": 0.9535324573516846,
+   "predicted_exact": 0.1156234130876054,
+   "predicted_approx": 0.21268798032391512
+  },
+  {
+   "dataset": "parquet-http",
+   "query": "SELECT PULocationID, COUNT(*) FROM taxi_local GROUP BY PULocationID ORDER BY COUNT(*) DESC LIMIT 10",
+   "setting": "Local",
+   "exact": 0.27196550369262695,
+   "approx": 0.8405411243438721,
+   "predicted_exact": 0.05607335656685685,
+   "predicted_approx": 1.7030789031263418
+  },
+  {
+   "dataset": "parquet-http",
+   "query": "SELECT PULocationID, COUNT(*) FROM taxi_local GROUP BY PULocationID ORDER BY COUNT(*) DESC LIMIT 10",
+   "setting": "Local",
+   "exact": 0.22436952590942383,
+   "approx": 0.8491755723953247,
+   "predicted_exact": 0.053865821103005175,
+   "predicted_approx": 1.210251207431115
+  },
+  {
+   "dataset": "parquet-http",
+   "query": "SELECT SUM(total_amount) FROM taxi_local WHERE passenger_count >= 2",
+   "setting": "Local",
+   "exact": 0.26732420921325684,
+   "approx": 0.8969526290893555,
+   "predicted_exact": 0.11601355484427572,
+   "predicted_approx": 1.8086678569037486
+  },
+  {
+   "dataset": "parquet-http",
+   "query": "SELECT SUM(total_amount) FROM taxi_local WHERE passenger_count >= 2",
+   "setting": "Local",
+   "exact": 0.18063104152679443,
+   "approx": 1.0550580024719238,
+   "predicted_exact": 0.1156234130876054,
+   "predicted_approx": 0.22001777588816915
+  },
+  {
+   "dataset": "rfam-family-copy",
+   "query": "SELECT type, COUNT(*), AVG(num_seed) FROM rfam.family GROUP BY type",
+   "setting": "Remote",
+   "exact": 2.0388870239257812,
+   "approx": 0.0038857460021972656,
+   "predicted_exact": 5.238043426104854,
+   "predicted_approx": 0.00412506615052095
+  },
+  {
+   "dataset": "rfam-family-copy",
+   "query": "SELECT COUNT(*) FROM rfam.family WHERE num_full > 1000",
+   "setting": "Remote",
+   "exact": 1.9590661525726318,
+   "approx": 0.0016939640045166016,
+   "predicted_exact": 2.665622746238837,
+   "predicted_approx": 0.0021039656720333194
+  },
+  {
+   "dataset": "rfam-family-copy",
+   "query": "SELECT seed_source, AVG(num_full), SUM(num_seed) FROM rfam.family GROUP BY seed_source",
+   "setting": "Remote",
+   "exact": 1.7271051406860352,
+   "approx": 0.010910987854003906,
+   "predicted_exact": 5.238043426104854,
+   "predicted_approx": 0.008803956761126743
+  },
+  {
+   "dataset": "rfam-full_region",
+   "query": "SELECT is_significant, COUNT(*), AVG(bit_score) FROM rfam.full_region GROUP BY is_significant",
+   "setting": "Remote",
+   "exact": 53.80476212501526,
+   "approx": 0.007651090621948242,
+   "predicted_exact": 8.496883805194908,
+   "predicted_approx": 0.010573347940003322
+  },
+  {
+   "dataset": "rfam-full_region-filtered",
+   "query": "SELECT type, COUNT(*), AVG(evalue_score) FROM rfam.full_region WHERE bit_score > 50 GROUP BY type",
+   "setting": "Remote",
+   "exact": 8.182497024536133,
+   "approx": 0.007677793502807617,
+   "predicted_exact": 46.72403653273155,
+   "predicted_approx": 0.009822610375486363
+  },
+  {
+   "dataset": "rfam-full_region-filtered",
+   "query": "SELECT COUNT(*), AVG(bit_score) FROM rfam.full_region WHERE truncated = '0' AND is_significant = 1",
+   "setting": "Remote",
+   "exact": 49.36776399612427,
+   "approx": 0.0025620460510253906,
+   "predicted_exact": 38.88523365787313,
+   "predicted_approx": 0.0022774872275402864
+  },
+  {
+   "dataset": "rfam-full_region-filtered",
+   "query": "SELECT rfam_acc, COUNT(*) AS n FROM rfam.full_region GROUP BY rfam_acc ORDER BY n DESC LIMIT 20",
+   "setting": "Remote",
+   "exact": 5.771049976348877,
+   "approx": 0.007544755935668945,
+   "predicted_exact": 16.288330846180852,
+   "predicted_approx": 0.005733430270035211
+  },
+  {
+   "dataset": "rfam-join",
+   "query": "SELECT f.type, COUNT(*) AS hits FROM rfam.full_region r JOIN rfam.family f ON f.rfam_acc = r.rfam_acc GROUP BY f.type ORDER BY hits DESC LIMIT 10",
+   "setting": "Remote",
+   "exact": 16.225898027420044,
+   "approx": 2.4460458755493164,
+   "predicted_exact": 12.616589631424318,
+   "predicted_approx": 2.475937105048792
+  },
+  {
+   "dataset": "rfam-join-clan",
+   "query": "SELECT c.clan_acc, COUNT(*) AS hits FROM rfam.full_region r JOIN rfam.clan_membership c ON c.rfam_acc = r.rfam_acc GROUP BY c.clan_acc ORDER BY hits DESC LIMIT 10",
+   "setting": "Remote",
+   "exact": 5.012871026992798,
+   "approx": 3.823151111602783,
+   "predicted_exact": 6.098066393522683,
+   "predicted_approx": 2.419146975995225
+  },
+  {
+   "dataset": "rfam-join-clan-copy",
+   "query": "SELECT c.clan_acc, COUNT(*) AS hits FROM rfam.full_region r JOIN rfam.clan_membership c ON c.rfam_acc = r.rfam_acc GROUP BY c.clan_acc ORDER BY hits DESC LIMIT 10",
+   "setting": "Remote",
+   "exact": 4.977595806121826,
+   "approx": 0.02167201042175293,
+   "predicted_exact": 7.052176306108773,
+   "predicted_approx": 0.019668849213964206
+  },
+  {
+   "dataset": "rfam-join-copy",
+   "query": "SELECT f.type, COUNT(*) AS hits FROM rfam.full_region r JOIN rfam.family f ON f.rfam_acc = r.rfam_acc GROUP BY f.type ORDER BY hits DESC LIMIT 10",
+   "setting": "Remote",
+   "exact": 16.13039994239807,
+   "approx": 0.027283191680908203,
+   "predicted_exact": 16.019399564785846,
+   "predicted_approx": 0.05732396443318764
+  },
+  {
+   "dataset": "rfam.family",
+   "query": "SELECT COUNT(*), SUM(num_full), AVG(num_full) FROM rfam.family",
+   "setting": "Remote",
+   "exact": 1.4670416116714478,
+   "approx": 0.0028115510940551758,
+   "predicted_exact": 2.903366504675598,
+   "predicted_approx": 0.0022284618808148414
+  },
+  {
+   "dataset": "rfam.family",
+   "query": "SELECT COUNT(*), AVG(num_seed) FROM rfam.family WHERE num_full > 747.8",
+   "setting": "Remote",
+   "exact": 1.4556443691253662,
+   "approx": 0.002149820327758789,
+   "predicted_exact": 2.6413308119546466,
+   "predicted_approx": 0.0020081296267467747
+  },
+  {
+   "dataset": "rfam.family",
+   "query": "SELECT date_trunc('month', created), COUNT(*) FROM rfam.family GROUP BY date_trunc('month', created) ORDER BY date_trunc('month', created)",
+   "setting": "Remote",
+   "exact": 1.6802486181259155,
+   "approx": 0.002087116241455078,
+   "predicted_exact": 3.9627665583195966,
+   "predicted_approx": 0.0024979670313507985
+  },
+  {
+   "dataset": "rfam.full_region",
+   "query": "SELECT COUNT(*), SUM(bit_score), AVG(bit_score) FROM rfam.full_region",
+   "setting": "Remote",
+   "exact": 6.162466526031494,
+   "approx": 0.006932377815246582,
+   "predicted_exact": 20.59820252977693,
+   "predicted_approx": 0.005048972837755929
+  },
+  {
+   "dataset": "rfam.full_region",
+   "query": "SELECT COUNT(*), AVG(cm_end) FROM rfam.full_region WHERE bit_score > 114.54",
+   "setting": "Remote",
+   "exact": 7.93843686580658,
+   "approx": 0.004998564720153809,
+   "predicted_exact": 14.100341945619,
+   "predicted_approx": 0.0026045630708591166
+  },
+  {
+   "dataset": "rfam.full_region",
+   "query": "SELECT type, COUNT(*), AVG(bit_score) FROM rfam.full_region GROUP BY type ORDER BY AVG(bit_score) DESC",
+   "setting": "Remote",
+   "exact": 8.40287959575653,
+   "approx": 0.006180524826049805,
+   "predicted_exact": 26.288919791141705,
+   "predicted_approx": 0.007074595958938791
+  },
+  {
+   "dataset": "rfam.full_region",
+   "query": "SELECT truncated, COUNT(*), AVG(bit_score) FROM rfam.full_region GROUP BY truncated ORDER BY AVG(bit_score) DESC",
+   "setting": "Remote",
+   "exact": 10.430145859718323,
+   "approx": 0.013780951499938965,
+   "predicted_exact": 35.011234443413976,
+   "predicted_approx": 0.008057150094598994
+  },
+  {
+   "dataset": "rnacentral-cpat",
+   "query": "SELECT is_protein_coding, COUNT(*), AVG(coding_probability) FROM rnacentral.cpat_results GROUP BY is_protein_coding",
+   "setting": "Remote",
+   "exact": 3.402599811553955,
+   "approx": 0.005074977874755859,
+   "predicted_exact": 7.800865885041638,
+   "predicted_approx": 0.007188905521687112
+  },
+  {
+   "dataset": "rnacentral-cpat",
+   "query": "SELECT is_protein_coding, COUNT(*), AVG(coding_probability) FROM rnacentral.cpat_results GROUP BY is_protein_coding",
+   "setting": "Remote",
+   "exact": 3.173609972000122,
+   "approx": 0.005110025405883789,
+   "predicted_exact": 7.487583403657334,
+   "predicted_approx": 0.007148532060727142
+  },
+  {
+   "dataset": "rnacentral-cpat",
+   "query": "SELECT AVG(fickett_score) FROM rnacentral.cpat_results WHERE hexamer_score > 0",
+   "setting": "Remote",
+   "exact": 2.5282459259033203,
+   "approx": 0.0025980472564697266,
+   "predicted_exact": 4.207483690631132,
+   "predicted_approx": 0.0038319326451773652
+  },
+  {
+   "dataset": "rnacentral-cpat",
+   "query": "SELECT AVG(fickett_score) FROM rnacentral.cpat_results WHERE hexamer_score > 0",
+   "setting": "Remote",
+   "exact": 2.3355541229248047,
+   "approx": 0.0023946762084960938,
+   "predicted_exact": 3.9618645787709146,
+   "predicted_approx": 0.004485824808126149
+  },
+  {
+   "dataset": "rnacentral-cpat",
+   "query": "SELECT COUNT(*), SUM(coding_probability) FROM rnacentral.cpat_results WHERE fickett_score > 0.5",
+   "setting": "Remote",
+   "exact": 2.814438819885254,
+   "approx": 0.002543926239013672,
+   "predicted_exact": 8.213430899971964,
+   "predicted_approx": 0.004788913259856939
+  },
+  {
+   "dataset": "rnacentral-cpat",
+   "query": "SELECT COUNT(*), SUM(coding_probability) FROM rnacentral.cpat_results WHERE fickett_score > 0.5",
+   "setting": "Remote",
+   "exact": 2.424485921859741,
+   "approx": 0.0014772415161132812,
+   "predicted_exact": 7.721020560800937,
+   "predicted_approx": 0.004034719214631817
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT COUNT(*) FROM f_skewed",
+   "setting": "Local",
+   "exact": 0.00039196014404296875,
+   "approx": 0.0041179656982421875,
+   "predicted_exact": 0.0003891329313399497,
+   "predicted_approx": 0.0032925990524187015
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT COUNT(*) FROM f_skewed",
+   "setting": "Local",
+   "exact": 0.0003590583801269531,
+   "approx": 0.0029201507568359375,
+   "predicted_exact": 0.0003910886417437159,
+   "predicted_approx": 0.002698235946597557
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT COUNT(*) FROM f_skewed",
+   "setting": "Local",
+   "exact": 0.00034308433532714844,
+   "approx": 0.0028858184814453125,
+   "predicted_exact": 0.0003924213314406554,
+   "predicted_approx": 0.0026545811743489962
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_skewed",
+   "setting": "Local",
+   "exact": 0.0012450218200683594,
+   "approx": 0.00599980354309082,
+   "predicted_exact": 0.0013732381027592635,
+   "predicted_approx": 0.005081162571501376
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_skewed",
+   "setting": "Local",
+   "exact": 0.0012297630310058594,
+   "approx": 0.005479097366333008,
+   "predicted_exact": 0.0013797001743412322,
+   "predicted_approx": 0.004255520667199017
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_skewed",
+   "setting": "Local",
+   "exact": 0.001252889633178711,
+   "approx": 0.005505084991455078,
+   "predicted_exact": 0.0013785529021324396,
+   "predicted_approx": 0.004363112645055741
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_skewed GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0018992424011230469,
+   "approx": 0.0036330223083496094,
+   "predicted_exact": 0.0024488802277031286,
+   "predicted_approx": 0.005440105567046148
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_skewed GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0019550323486328125,
+   "approx": 0.0076389312744140625,
+   "predicted_exact": 0.002461803341524236,
+   "predicted_approx": 0.005894244881208289
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_skewed GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0018339157104492188,
+   "approx": 0.004728794097900391,
+   "predicted_exact": 0.002465933915413912,
+   "predicted_approx": 0.004687581036595508
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g100, SUM(amount) FROM f_skewed GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0013899803161621094,
+   "approx": 0.0044171810150146484,
+   "predicted_exact": 0.0025005027323173577,
+   "predicted_approx": 0.0061794272364936965
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g100, SUM(amount) FROM f_skewed GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0014438629150390625,
+   "approx": 0.005293607711791992,
+   "predicted_exact": 0.0025094864592672627,
+   "predicted_approx": 0.0047183027318862415
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g100, SUM(amount) FROM f_skewed GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0014431476593017578,
+   "approx": 0.005630970001220703,
+   "predicted_exact": 0.0025722256971299484,
+   "predicted_approx": 0.004989130687257601
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_skewed GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0037109851837158203,
+   "approx": 0.03999495506286621,
+   "predicted_exact": 0.0025005027323173577,
+   "predicted_approx": 0.041603012337708675
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_skewed GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0035779476165771484,
+   "approx": 0.04117918014526367,
+   "predicted_exact": 0.0025094864592672627,
+   "predicted_approx": 0.039618477614572184
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_skewed GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0036537647247314453,
+   "approx": 0.03835439682006836,
+   "predicted_exact": 0.0025722256971299484,
+   "predicted_approx": 0.04558293713856392
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT AVG(amount) FROM f_skewed WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0012409687042236328,
+   "approx": 0.0021178722381591797,
+   "predicted_exact": 0.001443465848408831,
+   "predicted_approx": 0.0038477872531541128
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT AVG(amount) FROM f_skewed WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0011670589447021484,
+   "approx": 0.002170085906982422,
+   "predicted_exact": 0.0014447244144774973,
+   "predicted_approx": 0.003256953629724337
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT AVG(amount) FROM f_skewed WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0011608600616455078,
+   "approx": 0.003290891647338867,
+   "predicted_exact": 0.0014391689960651802,
+   "predicted_approx": 0.0024445898161851148
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g100, COUNT(*) FROM f_skewed GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.001280069351196289,
+   "approx": 0.004025936126708984,
+   "predicted_exact": 0.0014662000994000856,
+   "predicted_approx": 0.003450768759803335
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g100, COUNT(*) FROM f_skewed GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0011131763458251953,
+   "approx": 0.0038890838623046875,
+   "predicted_exact": 0.0014418629892451905,
+   "predicted_approx": 0.0038056395177453843
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT g100, COUNT(*) FROM f_skewed GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0011129379272460938,
+   "approx": 0.0037949085235595703,
+   "predicted_exact": 0.0014411315972091905,
+   "predicted_approx": 0.003493814509034451
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_skewed f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.002732992172241211,
+   "approx": 0.005214214324951172,
+   "predicted_exact": 0.0032688065661790368,
+   "predicted_approx": 0.006476316892119944
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_skewed f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.002750873565673828,
+   "approx": 0.005880117416381836,
+   "predicted_exact": 0.003295034172315549,
+   "predicted_approx": 0.0064037480853607965
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_skewed f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.002755880355834961,
+   "approx": 0.006048917770385742,
+   "predicted_exact": 0.003223405410719585,
+   "predicted_approx": 0.007278705470109687
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_skewed f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0032770633697509766,
+   "approx": 0.006307125091552734,
+   "predicted_exact": 0.00371629314568305,
+   "predicted_approx": 0.005160169875281997
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_skewed f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0030488967895507812,
+   "approx": 0.005505800247192383,
+   "predicted_exact": 0.0037137541097788905,
+   "predicted_approx": 0.005089485991037445
+  },
+  {
+   "dataset": "skewed-1000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_skewed f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0032999515533447266,
+   "approx": 0.004478931427001953,
+   "predicted_exact": 0.0037299707053340897,
+   "predicted_approx": 0.006044136488444664
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT COUNT(*) FROM f_20000",
+   "setting": "Local",
+   "exact": 0.00036597251892089844,
+   "approx": 0.0012788772583007812,
+   "predicted_exact": 0.0002698182587125844,
+   "predicted_approx": 0.0017461355509921167
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT COUNT(*) FROM f_20000",
+   "setting": "Local",
+   "exact": 0.0003180503845214844,
+   "approx": 0.0012807846069335938,
+   "predicted_exact": 0.00027165878995138044,
+   "predicted_approx": 0.0016751131205982215
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT COUNT(*) FROM f_20000",
+   "setting": "Local",
+   "exact": 0.0003120899200439453,
+   "approx": 0.0013649463653564453,
+   "predicted_exact": 0.000270181875650292,
+   "predicted_approx": 0.0022782707662520356
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_20000",
+   "setting": "Local",
+   "exact": 0.00045013427734375,
+   "approx": 0.002008676528930664,
+   "predicted_exact": 0.000627999189200421,
+   "predicted_approx": 0.0019098304533465712
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_20000",
+   "setting": "Local",
+   "exact": 0.0004558563232421875,
+   "approx": 0.002070903778076172,
+   "predicted_exact": 0.0006300918801045602,
+   "predicted_approx": 0.0021749114821677136
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_20000",
+   "setting": "Local",
+   "exact": 0.0004487037658691406,
+   "approx": 0.002264261245727539,
+   "predicted_exact": 0.0006346402326185453,
+   "predicted_approx": 0.002747546268165809
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_20000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0005829334259033203,
+   "approx": 0.002141237258911133,
+   "predicted_exact": 0.0008894345671990896,
+   "predicted_approx": 0.0024181974362874857
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_20000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0006017684936523438,
+   "approx": 0.0021877288818359375,
+   "predicted_exact": 0.0008945675279778657,
+   "predicted_approx": 0.0029028113535811153
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_20000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0006048679351806641,
+   "approx": 0.002270936965942383,
+   "predicted_exact": 0.0009001191387144542,
+   "predicted_approx": 0.0030406308650740574
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g100, SUM(amount) FROM f_20000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0005099773406982422,
+   "approx": 0.0025641918182373047,
+   "predicted_exact": 0.0010290343310286458,
+   "predicted_approx": 0.002644143421519003
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g100, SUM(amount) FROM f_20000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0005109310150146484,
+   "approx": 0.0025641918182373047,
+   "predicted_exact": 0.001026487516215871,
+   "predicted_approx": 0.0028466328317503257
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g100, SUM(amount) FROM f_20000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0005190372467041016,
+   "approx": 0.002493143081665039,
+   "predicted_exact": 0.0010394845297763608,
+   "predicted_approx": 0.0028160586242007954
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g5000, COUNT(*) FROM f_20000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0015020370483398438,
+   "approx": 0.015728235244750977,
+   "predicted_exact": 0.0010290343310286458,
+   "predicted_approx": 0.004402739999720428
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g5000, COUNT(*) FROM f_20000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0013899803161621094,
+   "approx": 0.015326261520385742,
+   "predicted_exact": 0.001026487516215871,
+   "predicted_approx": 0.0042634916687214666
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g5000, COUNT(*) FROM f_20000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.001421213150024414,
+   "approx": 0.015409231185913086,
+   "predicted_exact": 0.0010394845297763608,
+   "predicted_approx": 0.006033110096162786
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT COUNT(*) FROM f_20000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0006530284881591797,
+   "approx": 0.002557039260864258,
+   "predicted_exact": 0.0006834978112637544,
+   "predicted_approx": 0.002393652180542001
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT COUNT(*) FROM f_20000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.00047516822814941406,
+   "approx": 0.002062082290649414,
+   "predicted_exact": 0.0006905920336570028,
+   "predicted_approx": 0.0020674686337328763
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT COUNT(*) FROM f_20000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0005037784576416016,
+   "approx": 0.0016961097717285156,
+   "predicted_exact": 0.000661582196660047,
+   "predicted_approx": 0.001950848876628206
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT AVG(amount) FROM f_20000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.00045990943908691406,
+   "approx": 0.0017242431640625,
+   "predicted_exact": 0.0006834978112637544,
+   "predicted_approx": 0.0019750244972840023
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT AVG(amount) FROM f_20000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.000537872314453125,
+   "approx": 0.0017359256744384766,
+   "predicted_exact": 0.0006905920336570028,
+   "predicted_approx": 0.0018410466821057211
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT AVG(amount) FROM f_20000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.00049591064453125,
+   "approx": 0.0026082992553710938,
+   "predicted_exact": 0.000661582196660047,
+   "predicted_approx": 0.002546381218230852
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g100, COUNT(*) FROM f_20000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0006158351898193359,
+   "approx": 0.002665996551513672,
+   "predicted_exact": 0.0007005118235393293,
+   "predicted_approx": 0.0027150882225126976
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g100, COUNT(*) FROM f_20000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0006473064422607422,
+   "approx": 0.001712799072265625,
+   "predicted_exact": 0.0006918718675709593,
+   "predicted_approx": 0.0028444702686786514
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT g100, COUNT(*) FROM f_20000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0006411075592041016,
+   "approx": 0.0017893314361572266,
+   "predicted_exact": 0.0006980402626904412,
+   "predicted_approx": 0.002594795245008994
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_20000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0013911724090576172,
+   "approx": 0.003991127014160156,
+   "predicted_exact": 0.000959450920664091,
+   "predicted_approx": 0.004137425415594071
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_20000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0011818408966064453,
+   "approx": 0.004114866256713867,
+   "predicted_exact": 0.0009612336099452286,
+   "predicted_approx": 0.004622643806023565
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_20000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0011968612670898438,
+   "approx": 0.0042417049407958984,
+   "predicted_exact": 0.0009711990446504636,
+   "predicted_approx": 0.004610113312270031
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_20000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0011630058288574219,
+   "approx": 0.0034971237182617188,
+   "predicted_exact": 0.0010554996235782872,
+   "predicted_approx": 0.0036287215236505297
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_20000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.001215219497680664,
+   "approx": 0.0038132667541503906,
+   "predicted_exact": 0.0010481345727364646,
+   "predicted_approx": 0.004643561496101957
+  },
+  {
+   "dataset": "synthetic-20000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_20000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0011928081512451172,
+   "approx": 0.003773927688598633,
+   "predicted_exact": 0.0010266056079017796,
+   "predicted_approx": 0.004617003284232315
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT COUNT(*) FROM f_200000",
+   "setting": "Local",
+   "exact": 0.0003380775451660156,
+   "approx": 0.0035190582275390625,
+   "predicted_exact": 0.00040745243836284037,
+   "predicted_approx": 0.003718980733373682
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT COUNT(*) FROM f_200000",
+   "setting": "Local",
+   "exact": 0.0003120899200439453,
+   "approx": 0.003376007080078125,
+   "predicted_exact": 0.0003996851034103308,
+   "predicted_approx": 0.0038070290602003724
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT COUNT(*) FROM f_200000",
+   "setting": "Local",
+   "exact": 0.00029587745666503906,
+   "approx": 0.003431081771850586,
+   "predicted_exact": 0.0003972734586327699,
+   "predicted_approx": 0.0035747770815395467
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_200000",
+   "setting": "Local",
+   "exact": 0.0008287429809570312,
+   "approx": 0.005291938781738281,
+   "predicted_exact": 0.0008821400861041634,
+   "predicted_approx": 0.00355206849808617
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_200000",
+   "setting": "Local",
+   "exact": 0.0008099079132080078,
+   "approx": 0.0052530765533447266,
+   "predicted_exact": 0.0008591952184323625,
+   "predicted_approx": 0.00382857273553646
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_200000",
+   "setting": "Local",
+   "exact": 0.0008318424224853516,
+   "approx": 0.005681037902832031,
+   "predicted_exact": 0.0008632276860323667,
+   "predicted_approx": 0.004387315230195778
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_200000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0012497901916503906,
+   "approx": 0.005257129669189453,
+   "predicted_exact": 0.0015728265731895408,
+   "predicted_approx": 0.004243401484976707
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_200000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0011410713195800781,
+   "approx": 0.0053369998931884766,
+   "predicted_exact": 0.0015520022483097382,
+   "predicted_approx": 0.004163454730491572
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_200000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.00125885009765625,
+   "approx": 0.00728297233581543,
+   "predicted_exact": 0.0015478080923350492,
+   "predicted_approx": 0.00566699223591815
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g100, SUM(amount) FROM f_200000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0008759498596191406,
+   "approx": 0.006790876388549805,
+   "predicted_exact": 0.0018408014273169375,
+   "predicted_approx": 0.004784184578981996
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g100, SUM(amount) FROM f_200000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0008687973022460938,
+   "approx": 0.007603883743286133,
+   "predicted_exact": 0.001836144574249481,
+   "predicted_approx": 0.010423444348433045
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g100, SUM(amount) FROM f_200000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0009179115295410156,
+   "approx": 0.0075109004974365234,
+   "predicted_exact": 0.0018592664976567748,
+   "predicted_approx": 0.010099432086496387
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g5000, COUNT(*) FROM f_200000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.002183198928833008,
+   "approx": 0.027832984924316406,
+   "predicted_exact": 0.0018408014273169375,
+   "predicted_approx": 0.03874253242847731
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g5000, COUNT(*) FROM f_200000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.002285003662109375,
+   "approx": 0.028178930282592773,
+   "predicted_exact": 0.001836144574249481,
+   "predicted_approx": 0.038176996808872855
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g5000, COUNT(*) FROM f_200000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.002443075180053711,
+   "approx": 0.02740025520324707,
+   "predicted_exact": 0.0018592664976567748,
+   "predicted_approx": 0.037905675057800584
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT COUNT(*) FROM f_200000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0010890960693359375,
+   "approx": 0.004187822341918945,
+   "predicted_exact": 0.0010551897742626438,
+   "predicted_approx": 0.0034702025295301653
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT COUNT(*) FROM f_200000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.001119852066040039,
+   "approx": 0.005221843719482422,
+   "predicted_exact": 0.001038363126242,
+   "predicted_approx": 0.004828245851921727
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT COUNT(*) FROM f_200000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0010259151458740234,
+   "approx": 0.005686044692993164,
+   "predicted_exact": 0.001022957133326405,
+   "predicted_approx": 0.005765447979760709
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT AVG(amount) FROM f_200000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0007410049438476562,
+   "approx": 0.0045130252838134766,
+   "predicted_exact": 0.0010551897742626438,
+   "predicted_approx": 0.00371617525104928
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT AVG(amount) FROM f_200000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0008032321929931641,
+   "approx": 0.004534006118774414,
+   "predicted_exact": 0.001038363126242,
+   "predicted_approx": 0.003933728601656358
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT AVG(amount) FROM f_200000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0007541179656982422,
+   "approx": 0.00461888313293457,
+   "predicted_exact": 0.001022957133326405,
+   "predicted_approx": 0.0038103710470145167
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g100, COUNT(*) FROM f_200000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0008819103240966797,
+   "approx": 0.004090785980224609,
+   "predicted_exact": 0.0011211855520634082,
+   "predicted_approx": 0.003932210863314384
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g100, COUNT(*) FROM f_200000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0007810592651367188,
+   "approx": 0.007693052291870117,
+   "predicted_exact": 0.001089392076552007,
+   "predicted_approx": 0.004583684671794307
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT g100, COUNT(*) FROM f_200000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0008831024169921875,
+   "approx": 0.005627155303955078,
+   "predicted_exact": 0.0010899466468266901,
+   "predicted_approx": 0.0069010073167796665
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_200000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0017330646514892578,
+   "approx": 0.0068852901458740234,
+   "predicted_exact": 0.001633868879470575,
+   "predicted_approx": 0.004627468634238662
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_200000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.001752614974975586,
+   "approx": 0.007498025894165039,
+   "predicted_exact": 0.0015991004330307903,
+   "predicted_approx": 0.004639786067355659
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_200000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0018320083618164062,
+   "approx": 0.011858224868774414,
+   "predicted_exact": 0.0016027815063058613,
+   "predicted_approx": 0.00885307593801743
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_200000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0022089481353759766,
+   "approx": 0.007030963897705078,
+   "predicted_exact": 0.0018410321415247208,
+   "predicted_approx": 0.0046703112941438975
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_200000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0020868778228759766,
+   "approx": 0.006762981414794922,
+   "predicted_exact": 0.0018183248719539193,
+   "predicted_approx": 0.004759261668180201
+  },
+  {
+   "dataset": "synthetic-200000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_200000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0020580291748046875,
+   "approx": 0.010062217712402344,
+   "predicted_exact": 0.0018405443990770175,
+   "predicted_approx": 0.005762862671663918
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT COUNT(*) FROM f_2000000",
+   "setting": "Local",
+   "exact": 0.0004451274871826172,
+   "approx": 0.0030608177185058594,
+   "predicted_exact": 0.0007126067607105492,
+   "predicted_approx": 0.007786186793947229
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT COUNT(*) FROM f_2000000",
+   "setting": "Local",
+   "exact": 0.00046515464782714844,
+   "approx": 0.007962942123413086,
+   "predicted_exact": 0.000708012540423644,
+   "predicted_approx": 0.006807198269938376
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT COUNT(*) FROM f_2000000",
+   "setting": "Local",
+   "exact": 0.00043392181396484375,
+   "approx": 0.004168987274169922,
+   "predicted_exact": 0.0007206472251281023,
+   "predicted_approx": 0.0067708966736824755
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_2000000",
+   "setting": "Local",
+   "exact": 0.0020940303802490234,
+   "approx": 0.004190206527709961,
+   "predicted_exact": 0.002474494620906353,
+   "predicted_approx": 0.00698931352701299
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_2000000",
+   "setting": "Local",
+   "exact": 0.00193023681640625,
+   "approx": 0.01221323013305664,
+   "predicted_exact": 0.0024537356171179,
+   "predicted_approx": 0.007638750066197452
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_2000000",
+   "setting": "Local",
+   "exact": 0.0018990039825439453,
+   "approx": 0.007009029388427734,
+   "predicted_exact": 0.0025432807527622616,
+   "predicted_approx": 0.006953296386413279
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_2000000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.002607107162475586,
+   "approx": 0.004157066345214844,
+   "predicted_exact": 0.006562268510614575,
+   "predicted_approx": 0.005610717428576954
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_2000000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.002992868423461914,
+   "approx": 0.00977015495300293,
+   "predicted_exact": 0.006533738914853354,
+   "predicted_approx": 0.008596256688887574
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_2000000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.003091096878051758,
+   "approx": 0.006293058395385742,
+   "predicted_exact": 0.006776173815458312,
+   "predicted_approx": 0.008755086002690782
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g100, SUM(amount) FROM f_2000000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0018792152404785156,
+   "approx": 0.006359100341796875,
+   "predicted_exact": 0.006502339432841923,
+   "predicted_approx": 0.009635190475683654
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g100, SUM(amount) FROM f_2000000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.002207040786743164,
+   "approx": 0.007554769515991211,
+   "predicted_exact": 0.006537101313507792,
+   "predicted_approx": 0.009933038377797052
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g100, SUM(amount) FROM f_2000000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.002444028854370117,
+   "approx": 0.007727146148681641,
+   "predicted_exact": 0.0067488547401287026,
+   "predicted_approx": 0.009146448619267071
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_2000000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.004726886749267578,
+   "approx": 0.048436880111694336,
+   "predicted_exact": 0.006502339432841923,
+   "predicted_approx": 0.06414949042976162
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_2000000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.004997968673706055,
+   "approx": 0.04748415946960449,
+   "predicted_exact": 0.006537101313507792,
+   "predicted_approx": 0.07399713209359868
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_2000000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0045318603515625,
+   "approx": 0.05749106407165527,
+   "predicted_exact": 0.0067488547401287026,
+   "predicted_approx": 0.06693413476588754
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT COUNT(*) FROM f_2000000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0025839805603027344,
+   "approx": 0.0022912025451660156,
+   "predicted_exact": 0.0016997613245764243,
+   "predicted_approx": 0.003059036731357805
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT COUNT(*) FROM f_2000000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.002593994140625,
+   "approx": 0.0029697418212890625,
+   "predicted_exact": 0.0016919624367942563,
+   "predicted_approx": 0.003662712199819075
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT COUNT(*) FROM f_2000000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0026018619537353516,
+   "approx": 0.0031669139862060547,
+   "predicted_exact": 0.0017103280187501723,
+   "predicted_approx": 0.00297094488605546
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT AVG(amount) FROM f_2000000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0017299652099609375,
+   "approx": 0.0021529197692871094,
+   "predicted_exact": 0.0016997613245764243,
+   "predicted_approx": 0.0024316326709442294
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT AVG(amount) FROM f_2000000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0018868446350097656,
+   "approx": 0.002129077911376953,
+   "predicted_exact": 0.0016919624367942563,
+   "predicted_approx": 0.0029124812203659687
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT AVG(amount) FROM f_2000000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.001710653305053711,
+   "approx": 0.002176046371459961,
+   "predicted_exact": 0.0017103280187501723,
+   "predicted_approx": 0.0025441869129588725
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g100, COUNT(*) FROM f_2000000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0016012191772460938,
+   "approx": 0.0030820369720458984,
+   "predicted_exact": 0.0028028375045728556,
+   "predicted_approx": 0.007182143463311924
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g100, COUNT(*) FROM f_2000000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0015881061553955078,
+   "approx": 0.005109071731567383,
+   "predicted_exact": 0.00273377646052381,
+   "predicted_approx": 0.007985583389622679
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT g100, COUNT(*) FROM f_2000000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0016438961029052734,
+   "approx": 0.005241870880126953,
+   "predicted_exact": 0.0027830625899717925,
+   "predicted_approx": 0.006754009705822862
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_2000000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.004374980926513672,
+   "approx": 0.005153656005859375,
+   "predicted_exact": 0.007344474287057938,
+   "predicted_approx": 0.007577268510425341
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_2000000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.003946065902709961,
+   "approx": 0.00690007209777832,
+   "predicted_exact": 0.007312544035781338,
+   "predicted_approx": 0.007919774723071652
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_2000000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.003963947296142578,
+   "approx": 0.007350921630859375,
+   "predicted_exact": 0.007630634359547569,
+   "predicted_approx": 0.00876055533943895
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_2000000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0068361759185791016,
+   "approx": 0.007470846176147461,
+   "predicted_exact": 0.006578339795539946,
+   "predicted_approx": 0.005874950116625435
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_2000000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.006479978561401367,
+   "approx": 0.005482912063598633,
+   "predicted_exact": 0.006585227627010314,
+   "predicted_approx": 0.0057802235003770784
+  },
+  {
+   "dataset": "synthetic-2000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_2000000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.006018161773681641,
+   "approx": 0.00570225715637207,
+   "predicted_exact": 0.006807496498071329,
+   "predicted_approx": 0.006092954480670514
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT COUNT(*) FROM f_60000",
+   "setting": "Local",
+   "exact": 0.0003101825714111328,
+   "approx": 0.0017039775848388672,
+   "predicted_exact": 0.00033839937175907537,
+   "predicted_approx": 0.00215677576089028
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT COUNT(*) FROM f_60000",
+   "setting": "Local",
+   "exact": 0.00032520294189453125,
+   "approx": 0.0016782283782958984,
+   "predicted_exact": 0.00032186120310195865,
+   "predicted_approx": 0.0019786707673470497
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT COUNT(*) FROM f_60000",
+   "setting": "Local",
+   "exact": 0.0002999305725097656,
+   "approx": 0.0017969608306884766,
+   "predicted_exact": 0.000321660122672273,
+   "predicted_approx": 0.0018720008267148925
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_60000",
+   "setting": "Local",
+   "exact": 0.0005872249603271484,
+   "approx": 0.0026400089263916016,
+   "predicted_exact": 0.000764620484532597,
+   "predicted_approx": 0.0024883419691880686
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_60000",
+   "setting": "Local",
+   "exact": 0.0005719661712646484,
+   "approx": 0.002615213394165039,
+   "predicted_exact": 0.0007300126222231097,
+   "predicted_approx": 0.002670498198419387
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_60000",
+   "setting": "Local",
+   "exact": 0.0005917549133300781,
+   "approx": 0.0029637813568115234,
+   "predicted_exact": 0.0007290805072305156,
+   "predicted_approx": 0.0035459327403678255
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_60000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0007977485656738281,
+   "approx": 0.0027272701263427734,
+   "predicted_exact": 0.001136769721401951,
+   "predicted_approx": 0.0027848789785980036
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_60000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0007719993591308594,
+   "approx": 0.002841949462890625,
+   "predicted_exact": 0.0011000611931635666,
+   "predicted_approx": 0.003313582420649122
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_60000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0008356571197509766,
+   "approx": 0.003547191619873047,
+   "predicted_exact": 0.0011030113433799203,
+   "predicted_approx": 0.004579009787695699
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g100, SUM(amount) FROM f_60000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0006608963012695312,
+   "approx": 0.003654956817626953,
+   "predicted_exact": 0.00132965862357803,
+   "predicted_approx": 0.005481160434541027
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g100, SUM(amount) FROM f_60000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0006382465362548828,
+   "approx": 0.003566265106201172,
+   "predicted_exact": 0.0012962441378216907,
+   "predicted_approx": 0.005414411901510755
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g100, SUM(amount) FROM f_60000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0006198883056640625,
+   "approx": 0.0037021636962890625,
+   "predicted_exact": 0.0013354194636081573,
+   "predicted_approx": 0.00448334356082435
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g5000, COUNT(*) FROM f_60000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.001692056655883789,
+   "approx": 0.019449234008789062,
+   "predicted_exact": 0.00132965862357803,
+   "predicted_approx": 0.014232153513183588
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g5000, COUNT(*) FROM f_60000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0017170906066894531,
+   "approx": 0.01973700523376465,
+   "predicted_exact": 0.0012962441378216907,
+   "predicted_approx": 0.014427465169443232
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g5000, COUNT(*) FROM f_60000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.001680135726928711,
+   "approx": 0.02041912078857422,
+   "predicted_exact": 0.0013354194636081573,
+   "predicted_approx": 0.014162830041797525
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT COUNT(*) FROM f_60000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0007550716400146484,
+   "approx": 0.002203226089477539,
+   "predicted_exact": 0.0007918432363136016,
+   "predicted_approx": 0.0018797827702873944
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT COUNT(*) FROM f_60000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0007119178771972656,
+   "approx": 0.0023980140686035156,
+   "predicted_exact": 0.0007639384380283875,
+   "predicted_approx": 0.0020073122908159814
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT COUNT(*) FROM f_60000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0006818771362304688,
+   "approx": 0.002393960952758789,
+   "predicted_exact": 0.0007574194340175318,
+   "predicted_approx": 0.0019090071997410576
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT AVG(amount) FROM f_60000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0005548000335693359,
+   "approx": 0.0022580623626708984,
+   "predicted_exact": 0.0007918432363136016,
+   "predicted_approx": 0.0019405917478223017
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT AVG(amount) FROM f_60000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0006110668182373047,
+   "approx": 0.002201080322265625,
+   "predicted_exact": 0.0007639384380283875,
+   "predicted_approx": 0.0016870224059845765
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT AVG(amount) FROM f_60000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0005557537078857422,
+   "approx": 0.002535104751586914,
+   "predicted_exact": 0.0007574194340175318,
+   "predicted_approx": 0.002117606560825116
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g100, COUNT(*) FROM f_60000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0007770061492919922,
+   "approx": 0.003427267074584961,
+   "predicted_exact": 0.0008401861367273823,
+   "predicted_approx": 0.0019871744060546864
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g100, COUNT(*) FROM f_60000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0006780624389648438,
+   "approx": 0.004103183746337891,
+   "predicted_exact": 0.0008061722176608578,
+   "predicted_approx": 0.002576383539507435
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT g100, COUNT(*) FROM f_60000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0007469654083251953,
+   "approx": 0.0026040077209472656,
+   "predicted_exact": 0.0008142819847722578,
+   "predicted_approx": 0.0024754152473398954
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_60000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0013871192932128906,
+   "approx": 0.0042378902435302734,
+   "predicted_exact": 0.0011909068602435056,
+   "predicted_approx": 0.0045740238652963675
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_60000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0014011859893798828,
+   "approx": 0.004641056060791016,
+   "predicted_exact": 0.0011376773585686612,
+   "predicted_approx": 0.004551535209035995
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_60000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0014758110046386719,
+   "approx": 0.0065097808837890625,
+   "predicted_exact": 0.0011431593916009881,
+   "predicted_approx": 0.006314527304852225
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_60000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.001489877700805664,
+   "approx": 0.004127979278564453,
+   "predicted_exact": 0.001256020799322576,
+   "predicted_approx": 0.004468786824961194
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_60000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0015020370483398438,
+   "approx": 0.004370212554931641,
+   "predicted_exact": 0.001216238035088059,
+   "predicted_approx": 0.004609328575035578
+  },
+  {
+   "dataset": "synthetic-60000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_60000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0015113353729248047,
+   "approx": 0.005504131317138672,
+   "predicted_exact": 0.0012502526508184819,
+   "predicted_approx": 0.006602789836216364
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT COUNT(*) FROM f_600000",
+   "setting": "Local",
+   "exact": 0.0003662109375,
+   "approx": 0.004269123077392578,
+   "predicted_exact": 0.0003935212959409799,
+   "predicted_approx": 0.003523589454792756
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT COUNT(*) FROM f_600000",
+   "setting": "Local",
+   "exact": 0.00034499168395996094,
+   "approx": 0.0027163028717041016,
+   "predicted_exact": 0.0003960222282936371,
+   "predicted_approx": 0.003198744341323383
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT COUNT(*) FROM f_600000",
+   "setting": "Local",
+   "exact": 0.0003750324249267578,
+   "approx": 0.002557039260864258,
+   "predicted_exact": 0.00039150778476379044,
+   "predicted_approx": 0.0033322544692616163
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_600000",
+   "setting": "Local",
+   "exact": 0.0010459423065185547,
+   "approx": 0.0034177303314208984,
+   "predicted_exact": 0.0012956288924401752,
+   "predicted_approx": 0.0035493243733707345
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_600000",
+   "setting": "Local",
+   "exact": 0.0010421276092529297,
+   "approx": 0.004111766815185547,
+   "predicted_exact": 0.0012940531552299026,
+   "predicted_approx": 0.005994166223088227
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_600000",
+   "setting": "Local",
+   "exact": 0.001027822494506836,
+   "approx": 0.004760026931762695,
+   "predicted_exact": 0.0012889075635781292,
+   "predicted_approx": 0.00524209037860504
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_600000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.001567840576171875,
+   "approx": 0.0047643184661865234,
+   "predicted_exact": 0.0022122333379944316,
+   "predicted_approx": 0.004098515266155325
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_600000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.0014848709106445312,
+   "approx": 0.0035829544067382812,
+   "predicted_exact": 0.002211035796042037,
+   "predicted_approx": 0.005506051279127175
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_600000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.001470327377319336,
+   "approx": 0.004117012023925781,
+   "predicted_exact": 0.002188694263372622,
+   "predicted_approx": 0.005121685179411241
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g100, SUM(amount) FROM f_600000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0011379718780517578,
+   "approx": 0.00458216667175293,
+   "predicted_exact": 0.002329841933283137,
+   "predicted_approx": 0.00506538914951808
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g100, SUM(amount) FROM f_600000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0012166500091552734,
+   "approx": 0.004698753356933594,
+   "predicted_exact": 0.0023773512730791233,
+   "predicted_approx": 0.0066976995325239
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g100, SUM(amount) FROM f_600000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0012161731719970703,
+   "approx": 0.0043430328369140625,
+   "predicted_exact": 0.002383105998251167,
+   "predicted_approx": 0.005437301008052875
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g5000, COUNT(*) FROM f_600000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0029129981994628906,
+   "approx": 0.03895998001098633,
+   "predicted_exact": 0.002329841933283137,
+   "predicted_approx": 0.03843258824104925
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g5000, COUNT(*) FROM f_600000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0028998851776123047,
+   "approx": 0.04009509086608887,
+   "predicted_exact": 0.0023773512730791233,
+   "predicted_approx": 0.03680641241236241
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g5000, COUNT(*) FROM f_600000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.0029239654541015625,
+   "approx": 0.04091334342956543,
+   "predicted_exact": 0.002383105998251167,
+   "predicted_approx": 0.035422944530955146
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT COUNT(*) FROM f_600000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.001280069351196289,
+   "approx": 0.0019631385803222656,
+   "predicted_exact": 0.0013238106596083282,
+   "predicted_approx": 0.0033768574228673375
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT COUNT(*) FROM f_600000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.0012309551239013672,
+   "approx": 0.0021631717681884766,
+   "predicted_exact": 0.0013084974416178313,
+   "predicted_approx": 0.0028977777023468125
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT COUNT(*) FROM f_600000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.001322031021118164,
+   "approx": 0.0020487308502197266,
+   "predicted_exact": 0.0012885402046719898,
+   "predicted_approx": 0.0028598485217351624
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT AVG(amount) FROM f_600000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0009131431579589844,
+   "approx": 0.0018351078033447266,
+   "predicted_exact": 0.0013238106596083282,
+   "predicted_approx": 0.0028854629156735865
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT AVG(amount) FROM f_600000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0010077953338623047,
+   "approx": 0.0037522315979003906,
+   "predicted_exact": 0.0013084974416178313,
+   "predicted_approx": 0.002357595671887892
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT AVG(amount) FROM f_600000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0009601116180419922,
+   "approx": 0.001955747604370117,
+   "predicted_exact": 0.0012885402046719898,
+   "predicted_approx": 0.0030002440678744383
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g100, COUNT(*) FROM f_600000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.001009225845336914,
+   "approx": 0.0031380653381347656,
+   "predicted_exact": 0.001306689227887375,
+   "predicted_approx": 0.004018953032268192
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g100, COUNT(*) FROM f_600000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0009999275207519531,
+   "approx": 0.0030851364135742188,
+   "predicted_exact": 0.0012909378807934929,
+   "predicted_approx": 0.003724984604576577
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT g100, COUNT(*) FROM f_600000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0009791851043701172,
+   "approx": 0.00304412841796875,
+   "predicted_exact": 0.0012725261502360419,
+   "predicted_approx": 0.0036287202176446586
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_600000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0023529529571533203,
+   "approx": 0.004983663558959961,
+   "predicted_exact": 0.0020380322820304376,
+   "predicted_approx": 0.0054739626929681895
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_600000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0024347305297851562,
+   "approx": 0.004992008209228516,
+   "predicted_exact": 0.0020125268912414883,
+   "predicted_approx": 0.006607960556710237
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_600000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0023441314697265625,
+   "approx": 0.004584312438964844,
+   "predicted_exact": 0.002005283373847372,
+   "predicted_approx": 0.005833250203511393
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_600000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0026967525482177734,
+   "approx": 0.0042531490325927734,
+   "predicted_exact": 0.0025889363965796255,
+   "predicted_approx": 0.00623771658281577
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_600000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.002686023712158203,
+   "approx": 0.00535130500793457,
+   "predicted_exact": 0.0025575008076090797,
+   "predicted_approx": 0.006945679074199422
+  },
+  {
+   "dataset": "synthetic-600000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_600000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.002663850784301758,
+   "approx": 0.005126953125,
+   "predicted_exact": 0.002598420897354703,
+   "predicted_approx": 0.00556980322275948
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT COUNT(*) FROM f_6000000",
+   "setting": "Local",
+   "exact": 0.0005459785461425781,
+   "approx": 0.0031418800354003906,
+   "predicted_exact": 0.0007543849069442536,
+   "predicted_approx": 0.004175160862192759
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT COUNT(*) FROM f_6000000",
+   "setting": "Local",
+   "exact": 0.000492095947265625,
+   "approx": 0.01328897476196289,
+   "predicted_exact": 0.0007263539577557247,
+   "predicted_approx": 0.0038677539386630867
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT COUNT(*) FROM f_6000000",
+   "setting": "Local",
+   "exact": 0.0006620883941650391,
+   "approx": 0.010258913040161133,
+   "predicted_exact": 0.0007254740159910354,
+   "predicted_approx": 0.006635466693868523
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_6000000",
+   "setting": "Local",
+   "exact": 0.004420757293701172,
+   "approx": 0.0052950382232666016,
+   "predicted_exact": 0.0019773020309852385,
+   "predicted_approx": 0.004577476807326763
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_6000000",
+   "setting": "Local",
+   "exact": 0.0043239593505859375,
+   "approx": 0.008482217788696289,
+   "predicted_exact": 0.0018775281616800535,
+   "predicted_approx": 0.0058707224184461814
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT SUM(amount), AVG(qty) FROM f_6000000",
+   "setting": "Local",
+   "exact": 0.004492044448852539,
+   "approx": 0.01974010467529297,
+   "predicted_exact": 0.0019694807705045,
+   "predicted_approx": 0.007232629559284761
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_6000000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.007704019546508789,
+   "approx": 0.0053670406341552734,
+   "predicted_exact": 0.004483321938601998,
+   "predicted_approx": 0.005248993685446036
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_6000000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.007481098175048828,
+   "approx": 0.009876012802124023,
+   "predicted_exact": 0.004335189429888838,
+   "predicted_approx": 0.006799597484226956
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g4, COUNT(*), AVG(amount) FROM f_6000000 GROUP BY g4",
+   "setting": "Local",
+   "exact": 0.007104158401489258,
+   "approx": 0.013365030288696289,
+   "predicted_exact": 0.00436762373118186,
+   "predicted_approx": 0.009650779681022804
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g100, SUM(amount) FROM f_6000000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.006096839904785156,
+   "approx": 0.0066030025482177734,
+   "predicted_exact": 0.00466840158788044,
+   "predicted_approx": 0.005199137955276237
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g100, SUM(amount) FROM f_6000000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.0048601627349853516,
+   "approx": 0.00917196273803711,
+   "predicted_exact": 0.004578561955011588,
+   "predicted_approx": 0.007544971716758805
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g100, SUM(amount) FROM f_6000000 GROUP BY g100",
+   "setting": "Local",
+   "exact": 0.005460023880004883,
+   "approx": 0.018221139907836914,
+   "predicted_exact": 0.0045841441219763215,
+   "predicted_approx": 0.007664763451314466
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_6000000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.011303901672363281,
+   "approx": 0.08325815200805664,
+   "predicted_exact": 0.00466840158788044,
+   "predicted_approx": 0.038428252990436375
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_6000000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.011167049407958984,
+   "approx": 0.07406210899353027,
+   "predicted_exact": 0.004578561955011588,
+   "predicted_approx": 0.18657234863311034
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g5000, COUNT(*) FROM f_6000000 GROUP BY g5000",
+   "setting": "Local",
+   "exact": 0.010745763778686523,
+   "approx": 0.07655453681945801,
+   "predicted_exact": 0.0045841441219763215,
+   "predicted_approx": 0.20610234356537352
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT COUNT(*) FROM f_6000000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.005934000015258789,
+   "approx": 0.0033080577850341797,
+   "predicted_exact": 0.0021235619984281066,
+   "predicted_approx": 0.004433026557572252
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT COUNT(*) FROM f_6000000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.005789995193481445,
+   "approx": 0.0041310787200927734,
+   "predicted_exact": 0.0020116307621639365,
+   "predicted_approx": 0.004181720840922654
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT COUNT(*) FROM f_6000000 WHERE amount < 1",
+   "setting": "Local",
+   "exact": 0.006113767623901367,
+   "approx": 0.005506038665771484,
+   "predicted_exact": 0.002002261210291354,
+   "predicted_approx": 0.005714392497436632
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT AVG(amount) FROM f_6000000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.0040760040283203125,
+   "approx": 0.0030171871185302734,
+   "predicted_exact": 0.0021235619984281066,
+   "predicted_approx": 0.00436971897609195
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT AVG(amount) FROM f_6000000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.004141092300415039,
+   "approx": 0.0032744407653808594,
+   "predicted_exact": 0.0020116307621639365,
+   "predicted_approx": 0.004712511017815131
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT AVG(amount) FROM f_6000000 WHERE qty < 50",
+   "setting": "Local",
+   "exact": 0.003840923309326172,
+   "approx": 0.002707958221435547,
+   "predicted_exact": 0.002002261210291354,
+   "predicted_approx": 0.004077095793480005
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g100, COUNT(*) FROM f_6000000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0030679702758789062,
+   "approx": 0.003579854965209961,
+   "predicted_exact": 0.0018939018582207392,
+   "predicted_approx": 0.005110909259768571
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g100, COUNT(*) FROM f_6000000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0031480789184570312,
+   "approx": 0.006795167922973633,
+   "predicted_exact": 0.0017619235372635653,
+   "predicted_approx": 0.0070172961375987416
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT g100, COUNT(*) FROM f_6000000 GROUP BY g100 ORDER BY COUNT(*) DESC LIMIT 5",
+   "setting": "Local",
+   "exact": 0.0032339096069335938,
+   "approx": 0.012559175491333008,
+   "predicted_exact": 0.0016873860892031598,
+   "predicted_approx": 0.0064633477015097335
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_6000000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.00803828239440918,
+   "approx": 0.0056798458099365234,
+   "predicted_exact": 0.0046874534249196406,
+   "predicted_approx": 0.005746115051379824
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_6000000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.007958173751831055,
+   "approx": 0.008002758026123047,
+   "predicted_exact": 0.0045290537237430714,
+   "predicted_approx": 0.00801323812411462
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT d.cat, COUNT(*), SUM(f.amount) FROM f_6000000 f JOIN dim d ON d.k = f.g100 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.008187294006347656,
+   "approx": 0.013186931610107422,
+   "predicted_exact": 0.004541784775457198,
+   "predicted_approx": 0.009977236559031127
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_6000000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.0106658935546875,
+   "approx": 0.005430936813354492,
+   "predicted_exact": 0.005434986825885586,
+   "predicted_approx": 0.007059785792408242
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_6000000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.010565757751464844,
+   "approx": 0.005207061767578125,
+   "predicted_exact": 0.005229751412452056,
+   "predicted_approx": 0.00614281853070261
+  },
+  {
+   "dataset": "synthetic-6000000",
+   "query": "SELECT d.cat, AVG(f.qty) FROM f_6000000 f JOIN dim d ON d.k = f.g100 WHERE f.amount > 50 GROUP BY d.cat",
+   "setting": "Local",
+   "exact": 0.011400938034057617,
+   "approx": 0.00572514533996582,
+   "predicted_exact": 0.00521771483226945,
+   "predicted_approx": 0.007064809189748612
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT payment_type, COUNT(*), AVG(fare_amount) FROM taxi_local GROUP BY payment_type",
+   "setting": "Local",
+   "exact": 0.005048036575317383,
+   "approx": 0.010445117950439453,
+   "predicted_exact": 0.007797220872365232,
+   "predicted_approx": 0.005807351666283165
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT payment_type, COUNT(*), AVG(fare_amount) FROM taxi_local GROUP BY payment_type",
+   "setting": "Local",
+   "exact": 0.004373073577880859,
+   "approx": 0.008079767227172852,
+   "predicted_exact": 0.007716951986380761,
+   "predicted_approx": 0.007575307392821111
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT payment_type, COUNT(*), AVG(fare_amount) FROM taxi_local GROUP BY payment_type",
+   "setting": "Local",
+   "exact": 0.004359006881713867,
+   "approx": 0.008296012878417969,
+   "predicted_exact": 0.007868152232157713,
+   "predicted_approx": 0.007090870773157574
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT AVG(tip_amount) FROM taxi_local WHERE trip_distance > 5",
+   "setting": "Local",
+   "exact": 0.003039836883544922,
+   "approx": 0.005293846130371094,
+   "predicted_exact": 0.0037188673855732242,
+   "predicted_approx": 0.0023048761810343732
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT AVG(tip_amount) FROM taxi_local WHERE trip_distance > 5",
+   "setting": "Local",
+   "exact": 0.0028357505798339844,
+   "approx": 0.0035457611083984375,
+   "predicted_exact": 0.003562811776452176,
+   "predicted_approx": 0.002912178801691555
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT AVG(tip_amount) FROM taxi_local WHERE trip_distance > 5",
+   "setting": "Local",
+   "exact": 0.002930879592895508,
+   "approx": 0.0046041011810302734,
+   "predicted_exact": 0.0035981463563053762,
+   "predicted_approx": 0.004347410501094028
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT PULocationID, COUNT(*) FROM taxi_local GROUP BY PULocationID ORDER BY COUNT(*) DESC LIMIT 10",
+   "setting": "Local",
+   "exact": 0.00168609619140625,
+   "approx": 0.004528045654296875,
+   "predicted_exact": 0.003708743705594412,
+   "predicted_approx": 0.0036866113665049334
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT PULocationID, COUNT(*) FROM taxi_local GROUP BY PULocationID ORDER BY COUNT(*) DESC LIMIT 10",
+   "setting": "Local",
+   "exact": 0.0015802383422851562,
+   "approx": 0.006613731384277344,
+   "predicted_exact": 0.0035972394374040513,
+   "predicted_approx": 0.006673846382384569
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT PULocationID, COUNT(*) FROM taxi_local GROUP BY PULocationID ORDER BY COUNT(*) DESC LIMIT 10",
+   "setting": "Local",
+   "exact": 0.0016660690307617188,
+   "approx": 0.006635904312133789,
+   "predicted_exact": 0.00356173822124654,
+   "predicted_approx": 0.00676994815110439
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT SUM(total_amount) FROM taxi_local WHERE passenger_count >= 2",
+   "setting": "Local",
+   "exact": 0.0014238357543945312,
+   "approx": 0.0025861263275146484,
+   "predicted_exact": 0.0037188673855732242,
+   "predicted_approx": 0.002102628625217214
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT SUM(total_amount) FROM taxi_local WHERE passenger_count >= 2",
+   "setting": "Local",
+   "exact": 0.0013790130615234375,
+   "approx": 0.003162860870361328,
+   "predicted_exact": 0.003562811776452176,
+   "predicted_approx": 0.003945603559418278
+  },
+  {
+   "dataset": "taxi-parquet",
+   "query": "SELECT SUM(total_amount) FROM taxi_local WHERE passenger_count >= 2",
+   "setting": "Local",
+   "exact": 0.0013091564178466797,
+   "approx": 0.003599882125854492,
+   "predicted_exact": 0.0035981463563053762,
+   "predicted_approx": 0.0038467785188334444
+  },
+  {
+   "dataset": "tpch-0.3",
+   "query": "SELECT l_returnflag, l_linestatus, SUM(l_quantity), AVG(l_extendedprice), COUNT(*) FROM lineitem GROUP BY l_returnflag, l_linestatus ORDER BY l_returnflag, l_linestatus",
+   "setting": "Local",
+   "exact": 0.006139039993286133,
+   "approx": 0.006898164749145508,
+   "predicted_exact": 0.008150950759227565,
+   "predicted_approx": 0.007323844066002856
+  },
+  {
+   "dataset": "tpch-0.3",
+   "query": "SELECT l_returnflag, l_linestatus, SUM(l_quantity), AVG(l_extendedprice), COUNT(*) FROM lineitem GROUP BY l_returnflag, l_linestatus ORDER BY l_returnflag, l_linestatus",
+   "setting": "Local",
+   "exact": 0.006612062454223633,
+   "approx": 0.011120319366455078,
+   "predicted_exact": 0.006164762516437882,
+   "predicted_approx": 0.010196437769206665
+  },
+  {
+   "dataset": "tpch-0.3",
+   "query": "SELECT l_returnflag, l_linestatus, SUM(l_quantity), AVG(l_extendedprice), COUNT(*) FROM lineitem GROUP BY l_returnflag, l_linestatus ORDER BY l_returnflag, l_linestatus",
+   "setting": "Local",
+   "exact": 0.006137847900390625,
+   "approx": 0.010359764099121094,
+   "predicted_exact": 0.0063470714761957,
+   "predicted_approx": 0.009683920485893815
+  },
+  {
+   "dataset": "tpch-0.3",
+   "query": "SELECT SUM(l_extendedprice * l_discount) FROM lineitem WHERE l_discount BETWEEN 0.05 AND 0.07 AND l_quantity < 24",
+   "setting": "Local",
+   "exact": 0.001689910888671875,
+   "approx": 0.004191160202026367,
+   "predicted_exact": 0.0018010453989999178,
+   "predicted_approx": 0.00492445104359339
+  },
+  {
+   "dataset": "tpch-0.3",
+   "query": "SELECT SUM(l_extendedprice * l_discount) FROM lineitem WHERE l_discount BETWEEN 0.05 AND 0.07 AND l_quantity < 24",
+   "setting": "Local",
+   "exact": 0.0016281604766845703,
+   "approx": 0.003662109375,
+   "predicted_exact": 0.0018034963107447747,
+   "predicted_approx": 0.0044793503217651805
+  },
+  {
+   "dataset": "tpch-0.3",
+   "query": "SELECT SUM(l_extendedprice * l_discount) FROM lineitem WHERE l_discount BETWEEN 0.05 AND 0.07 AND l_quantity < 24",
+   "setting": "Local",
+   "exact": 0.001566171646118164,
+   "approx": 0.0036220550537109375,
+   "predicted_exact": 0.0018119642725789246,
+   "predicted_approx": 0.0050760968083700215
+  },
+  {
+   "dataset": "tpch-0.3",
+   "query": "SELECT n.n_name, COUNT(*), SUM(l.l_extendedprice) FROM lineitem l JOIN orders o ON o.o_orderkey = l.l_orderkey JOIN customer c ON c.c_custkey = o.o_custkey JOIN nation n ON n.n_nationkey = c.c_nationkey GROUP BY n.n_name",
+   "setting": "Local",
+   "exact": 0.02271413803100586,
+   "approx": 0.018587112426757812,
+   "predicted_exact": 0.004592957793493743,
+   "predicted_approx": 0.008315106103194907
+  },
+  {
+   "dataset": "tpch-0.3",
+   "query": "SELECT n.n_name, COUNT(*), SUM(l.l_extendedprice) FROM lineitem l JOIN orders o ON o.o_orderkey = l.l_orderkey JOIN customer c ON c.c_custkey = o.o_custkey JOIN nation n ON n.n_nationkey = c.c_nationkey GROUP BY n.n_name",
+   "setting": "Local",
+   "exact": 0.022169113159179688,
+   "approx": 0.05013585090637207,
+   "predicted_exact": 0.0044694612151971016,
+   "predicted_approx": 0.012658847657213331
+  },
+  {
+   "dataset": "tpch-0.3",
+   "query": "SELECT n.n_name, COUNT(*), SUM(l.l_extendedprice) FROM lineitem l JOIN orders o ON o.o_orderkey = l.l_orderkey JOIN customer c ON c.c_custkey = o.o_custkey JOIN nation n ON n.n_nationkey = c.c_nationkey GROUP BY n.n_name",
+   "setting": "Local",
+   "exact": 0.020505905151367188,
+   "approx": 0.02471017837524414,
+   "predicted_exact": 0.004434349383265535,
+   "predicted_approx": 0.01072736161049896
+  }
+ ]
+}

@@ -11,17 +11,19 @@ def route_query(
     source: str,
     accuracy_target: float | None = None,
     progress_callback: Callable[[dict[str, Any]], None] | None = None,
+    profile: str | None = None,
 ) -> dict[str, Any]:
     mode_key = mode.lower().strip()
     if mode_key == "benchmark":
         return run_benchmark(
             query,
             source,
+            approx_mode=profile or "balanced",
             accuracy_target=accuracy_target,
             progress_callback=progress_callback,
         )
     if mode_key in {"approx", "fast", "balanced", "accurate"}:
-        approx_mode = "balanced" if mode_key == "approx" else mode_key
+        approx_mode = (profile or "balanced") if mode_key == "approx" else mode_key
         return run_approx(
             query,
             source,

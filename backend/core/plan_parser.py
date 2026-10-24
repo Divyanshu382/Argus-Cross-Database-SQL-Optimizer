@@ -115,7 +115,82 @@ def _from_postgres_node(node: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _as_list(value: Any) -> list[str]:
+    if value is None or value == "":
+        return []
+    return [str(v) for v in value] if isinstance(value, list) else [str(value)]
+
+
+def _from_duckdb_node(node: dict[str, Any]) -> dict[str, Any] | None:
+    """Convert a DuckDB EXPLAIN (FORMAT JSON) node, with or without ANALYZE."""
+    name = node.get("operator_name") or node.get("operator_type") or node.get("name")
+    children = node.get("children") or []
+    if not name or name == "EXPLAIN_ANALYZE":
+        # The ANALYZE wrapper objects carry no operator of their own.
+        return _from_duckdb_node(children[0]) if children else None
+
+    extra = node.get("extra_info") or {}
+    columns: list[str] = []
+    aggregates: list[str] = []
+    if "Table" in extra:
+        columns.append(str(extra["Table"]).split(".")[-1])
+    if "Join Type" in extra:
+        columns.append(f"{extra['Join Type']} ON {', '.join(_as_list(extra.get('Conditions')))}")
+    for key in ("Expression", "Filters", "Groups"):
+        columns.extend(_as_list(extra.get(key)))
+    columns.extend(
+        # DuckDB's internal compression helpers are noise to a reader.
+        p for p in _as_list(extra.get("Projections")) if not p.startswith("__internal")
+    )
+    aggregates.extend(_as_list(extra.get("Aggregates")))
+
+    rows = node.get("operator_cardinality")
+    if rows is None:
+        try:
+            rows = int(extra.get("Estimated Cardinality"))
+        except (TypeError, ValueError):
+            rows = None
+    timing = node.get("operator_timing")
+
+    converted: dict[str, Any] = {
+        "type": str(name).upper().replace(" ", "_"),
+        "columns": columns,
+        "aggregates": aggregates,
+        "rows": rows,
+        "children": [c for c in (_from_duckdb_node(child) for child in children) if c is not None],
+    }
+    if timing is not None:
+        converted["time"] = float(timing) * 1000.0
+    return converted
+
+
+def explain_duckdb_tree(node: dict[str, Any] | None) -> str:
+    if not node:
+        return "Could not parse query plan."
+    operators: list[str] = []
+
+    def walk(n: dict[str, Any]) -> None:
+        for child in n.get("children", []):
+            walk(child)
+        operators.append(n["type"].replace("_", " ").lower())
+
+    walk(node)
+    return "Runs bottom-up: " + " → ".join(operators) + "."
+
+
 def parse_plan(raw_plan: Any) -> dict[str, Any]:
+    if (
+        isinstance(raw_plan, list)
+        and raw_plan
+        and isinstance(raw_plan[0], tuple)
+        and raw_plan[0][0] in ("physical_plan", "analyzed_plan")
+        and str(raw_plan[0][1]).lstrip().startswith(("[", "{"))
+    ):
+        document = json.loads(raw_plan[0][1])
+        root = document[0] if isinstance(document, list) else document
+        tree = _from_duckdb_node(root)
+        return {"format": "duckdb_json", "plan_tree": tree, "explanation": explain_duckdb_tree(tree)}
+
     if isinstance(raw_plan, list):
         if raw_plan and isinstance(raw_plan[0], tuple) and len(raw_plan[0]) > 1:
             lines = [str(r[1]) for r in raw_plan]

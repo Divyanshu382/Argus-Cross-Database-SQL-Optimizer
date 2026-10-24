@@ -1,3 +1,5 @@
+> **Historical note:** this document describes an earlier stage of the project and is out of date. See [README.md](README.md) for the current design, features and limitations.
+
 # Argus - Complete Project Analysis
 
 ## Executive Summary
